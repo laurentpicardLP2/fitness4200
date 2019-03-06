@@ -1,11 +1,12 @@
+
 import { map } from 'rxjs/operators';
 import { async } from '@angular/core/testing';
-import { CustomerService } from '../services/customer.service';
-import { Customer } from './../models/customer.model';
+import { CustomerService } from '../../services/customer.service';
+import { Customer } from '../../models/customer.model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators, FormBuilder, AbstractControl} from '@angular/forms';
-import { CustomValidators, ConfirmValidParentMatcher, regExps,  errorMessages} from '../services/custom-validators.service';
+import { CustomValidators, ConfirmValidParentMatcher, regExps,  errorMessages} from '../../services/custom-validators.service';
 import { HttpClient } from '@angular/common/http';
 import { routerNgProbeToken } from '@angular/router/src/router_module';
 
@@ -168,3 +169,4 @@ export class CustomerNewComponent implements OnInit {
     return isValid ? null : { checkUsername: true };
   }
 }
+

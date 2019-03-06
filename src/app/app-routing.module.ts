@@ -1,11 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CustomerNewComponent } from './customer-new/customer-new.component';
-import { SeanceBookingComponent } from './seance-booking/seance-booking.component';
+import { CustomerNewComponent } from './user/customer-new/customer-new.component';
+import { SeanceBookingComponent } from './booking/seance-booking/seance-booking.component';
+import { FacilityCategoryBookingComponent } from './booking/facility-category-booking/facility-category-booking.component';
+import { FacilityBookingComponent } from './booking/facility-booking/facility-booking.component';
 
 const routes: Routes = [
   { path: 'customer-new', component: CustomerNewComponent },
-  { path: 'seance-booking', component: SeanceBookingComponent }
+  //{ path: 'seance-booking', component: SeanceBookingComponent},
+  //{ path: 'facility-category-booking', component: FacilityCategoryBookingComponent},
+  //{ path: 'facility-booking', component: FacilityBookingComponent, outlet: 'booking-router-outlet' }
+
+  { path: 'seance-booking', component: SeanceBookingComponent, children: [
+    { path: 'facility-category-booking', component: FacilityCategoryBookingComponent, outlet: 'booking-router-outlet' }] }
 ];
 
 @NgModule({

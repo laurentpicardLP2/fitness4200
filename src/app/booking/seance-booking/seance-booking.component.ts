@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators, FormBuilder, AbstractControl} from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-seance-booking',
@@ -12,8 +13,9 @@ export class SeanceBookingComponent implements OnInit {
   strDateOfBooking: string;
   dateOfBooking: Date;
 
-
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router) {
     this.createForm();
    }
 
@@ -55,5 +57,13 @@ export class SeanceBookingComponent implements OnInit {
     });      
   }
 
+  public onShowFacilityCategory() {
+    console.log("onShowFacilityCategory()");
+
+    this.router.navigate(['/seance-booking', {outlets: {'booking-router-outlet': ['facility-category-booking']}}]);
+
+    //this.router.navigate(['/speakers', {outlets: {'bio': [id]}}]);
+
+  }
   
 }

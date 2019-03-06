@@ -5,22 +5,26 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material-module';
-import { CustomerNewComponent } from './customer-new/customer-new.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SeanceBookingComponent } from './seance-booking/seance-booking.component';
 import { MatIconModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
+import { SeanceBookingComponent } from './booking/seance-booking/seance-booking.component';
+import { CustomerNewComponent } from './user/customer-new/customer-new.component';
+import { FacilityBookingComponent } from './booking/facility-booking/facility-booking.component';
+import { FacilityCategoryBookingComponent } from './booking/facility-category-booking/facility-category-booking.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CustomerNewComponent,
-    SeanceBookingComponent,
     HeaderComponent,
     SidenavListComponent,
+    SeanceBookingComponent,
+    CustomerNewComponent,
+    FacilityBookingComponent,
+    FacilityCategoryBookingComponent,
   ],
   imports: [
     BrowserModule,
