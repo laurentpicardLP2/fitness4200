@@ -1,0 +1,10 @@
+
+<div class="pad">
+    <form [formGroup]="seanceBookingForm" class="customer-form">
+        
+            <input matInput type="date" placeholder="date of Booking" formControlName="dateOfBooking" [(ngModel)]="strDateOfBooking">
+            <input matInput type="time" min="06:00" max="22:00" value="06:00" step="600" placeholder="time of Booking" formControlName="timeOfBooking" [(ngModel)]="timeOfBooking" (click)="onShowTime()">
+   
+    </form>
+
+</div>
