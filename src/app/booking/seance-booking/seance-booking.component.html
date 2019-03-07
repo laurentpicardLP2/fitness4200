@@ -3,26 +3,29 @@
 
 
 
-
-<div class="pad">
-  <form [formGroup]="seanceBookingForm" class="customer-form">
+ <div fxFlex fxLayout="column" fxLayoutAlign="space-around center">
+  <div class="pad">
+    <form [formGroup]="seanceBookingForm" class="customer-form">
+        <mat-form-field>
+      <input matInput type="date" placeholder="date of Booking" formControlName="dateOfBooking" [(ngModel)]="strDateOfBooking">
+      </mat-form-field>
       <mat-form-field>
-    <input matInput type="date" placeholder="date of Booking" formControlName="dateOfBooking" [(ngModel)]="strDateOfBooking">
+      <input matInput type="time" min="06:00" max="22:00" step="600" placeholder="time of Booking" formControlName="timeOfBooking" [(ngModel)]="strTimeOfBooking" (click)="onShowTime()">
+      <!-- <button mat-button [routerLink]="['/seance-booking', {outlets: {'booking-router-outlet': ['facility-category-booking']}}]">Show categories!</button> -->
     </mat-form-field>
-    <mat-form-field>
-    <input matInput type="time" min="06:00" max="22:00" value="06:00" step="600" placeholder="time of Booking" formControlName="timeOfBooking" [(ngModel)]="timeOfBooking" (click)="onShowTime()">
-    <!-- <button mat-button [routerLink]="['/seance-booking', {outlets: {'booking-router-outlet': ['facility-category-booking']}}]">Show categories!</button> -->
-  </mat-form-field>
-    <button mat-button (click)="onShowFacilityCategory()">See categories</button>
-    
-  </form>
- 
+      <button [disabled]="!isOpen" mat-button (click)="onShowFacilityCategory()">See categories</button>
+    </form>
+  </div>
+  <div>
+    <router-outlet name="booking-router-outlet"></router-outlet>
+  </div>
 </div>
 
-<div class="pad">
-    <router-outlet name="booking-router-outlet"></router-outlet>
-  
-</div>
+
+    
+
+
+
 
 
 

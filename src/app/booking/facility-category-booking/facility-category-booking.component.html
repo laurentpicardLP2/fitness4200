@@ -1,4 +1,23 @@
-<p>
-    facility-category-booking works!
-  </p>
+
+      
+
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let facilityCategory of listFacilityCategories | async">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+             {{ facilityCategory.facilityCategoryName }}
+        </mat-panel-title>
+        <mat-panel-description>
+         equipements disponibles : {{ facilityCategory.quantity }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
   
+      <mat-form-field>
+        <input matInput placeholder="First name">
+      </mat-form-field>
+  
+      <mat-form-field>
+        <input matInput placeholder="Age">
+      </mat-form-field>
+    </mat-expansion-panel>
+  </mat-accordion>
