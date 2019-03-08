@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators, FormBuilder, AbstractControl} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BookingService } from '../../services/booking.service';
-import { FacilityCategory } from '../../models/facility-category.model';
+import { FacilityAvailableAdaptater } from '../../models/facility-available-adaptater.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -14,7 +14,7 @@ import { HttpClient } from '@angular/common/http';
 export class FacilityCategoryBookingComponent implements OnInit {
   panelOpenState = false;
   timestamp: string;
-  listFacilityCategories: BehaviorSubject<FacilityCategory[]>;
+  listFacilityCategories: BehaviorSubject<FacilityAvailableAdaptater[]>;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,21 +26,20 @@ export class FacilityCategoryBookingComponent implements OnInit {
       }
 
   ngOnInit() {
-    this.timestamp = this.route.snapshot.params['timestamp']; // contient la tranche horaire sélectionnée
-    this.bookingService.publishFacilityCategories(this.timestamp);
-    this.listFacilityCategories = this.bookingService.listFacilityCategories$;
+    //this.timestamp = this.route.snapshot.params['timestamp']; // contient la tranche horaire sélectionnée
+    this.bookingService.timestampSubject.subscribe(res => {
+      this.timestamp = res;
+      this.bookingService.publishFacilityCategories(this.timestamp);
+      this.listFacilityCategories = this.bookingService.listFacilityCategories$;
+    })
+    
 
   }
 
-  public getAvailableFacilitiesForAcategory(facilityCategoryName){
-    
-    //return this.bookingService.getAvailableFacilitiesForAcategory(facilityCategoryName, this.sliceTime);
-    //return this.bookingService.getAvailableFacilitiesForAcategory(facilityCategoryName, this.sliceTime);
-    console.log(facilityCategoryName);
-    
-    return 14;
+  onBookingFacility(){
+    console.log("onBookingFacility()")
+    this.router.navigate(['/seance-booking', {outlets: {'facility-router-outlet' : ['facility-booking']}}]);
   }
-
   
 }
 

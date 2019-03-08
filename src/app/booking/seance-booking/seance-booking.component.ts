@@ -1,6 +1,8 @@
+import { BookingService } from './../../services/booking.service';
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators, FormBuilder, AbstractControl} from '@angular/forms';
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-seance-booking',
@@ -32,16 +34,18 @@ export class SeanceBookingComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router) {
-    this.createForm();
-    this.isOpen = true;
-    this.initDateBookingField();
-    this.initTimeBookingField();
-    
+    private router: Router,
+    private bookingService: BookingService) {
+      this.createForm();
+      this.isOpen = true;
+      this.initDateBookingField();
+      this.initTimeBookingField();
+      this.routingInit();
+      this.bookingService = bookingService;
    }
 
   ngOnInit() {
-   
+    
   }
 
   public onShowTime(){
@@ -49,7 +53,7 @@ export class SeanceBookingComponent implements OnInit {
     let hh = field[0];
     let hhInt = parseInt(hh, 10);
     if(hhInt < this.currentHour ) {
-      this.isOpen = false;
+      //this.isOpen = false;
     }
     else {
       this.isOpen = true;
@@ -125,19 +129,23 @@ export class SeanceBookingComponent implements OnInit {
   ;
   }
 
-  public onShowFacilityCategory() {
+  routingInit(){
+    this.bookingService.setSubject(this.getDateTimeFields());
+    //this.router.navigate(['/seance-booking', {outlets: {'booking-router-outlet' : ['facility-category-booking']}}]);
+  }
+
+  public onChangeDateTime() {
+    this.bookingService.setSubject(this.getDateTimeFields());
+    this.router.navigate(['/seance-booking', {outlets: {'facility-category-router-outlet' : ['facility-category-booking']}}]);
+  }
+
+  getDateTimeFields(){
     this.selectedConcatFields = "";
     let dateFieldsSplit = this.strDateOfBooking.split("-");
     let timeFieldsSplit = this.strTimeOfBooking.split(":");
 
-    this.selectedConcatFields = dateFieldsSplit[0] + "_" + dateFieldsSplit[1] + "_" +dateFieldsSplit[2] + "_" + 
+    return dateFieldsSplit[0] + "_" + dateFieldsSplit[1] + "_" +dateFieldsSplit[2] + "_" + 
     timeFieldsSplit[0] + "_" + (Math.floor(parseInt(timeFieldsSplit[1],10)/10)).toString();
-    
-    //selectedSlice
-    //this.router.navigate(['/seance-booking', {outlets: {'booking-router-outlet' : ['facility-category-booking']}}]);
-    this.router.navigate(['/seance-booking', {outlets: {'booking-router-outlet' : [this.selectedConcatFields]}}]);
-    //this.router.navigate(['/speakers', {outlets: {'bio': [id]}}]);
-
   }
   
 }

@@ -5,19 +5,17 @@
     <mat-expansion-panel *ngFor="let facilityCategory of listFacilityCategories | async">
       <mat-expansion-panel-header>
         <mat-panel-title>
-             {{ facilityCategory.facilityCategoryName }}
+             {{ facilityCategory.facilityCategoryName }} ({{ facilityCategory.quantityAvailable }} )
         </mat-panel-title>
-        <mat-panel-description>
-         equipements disponibles : {{ facilityCategory.quantity }}
-        </mat-panel-description>
       </mat-expansion-panel-header>
   
-      <mat-form-field>
-        <input matInput placeholder="First name">
-      </mat-form-field>
+
+      <table>
+        <tr *ngFor="let facility of facilityCategory.facilities">
+          <td><a mat-flat-button (click)="onBookingFacility()">{{ facility.facilityName }}</a></td>
+        </tr>
+      </table>
+      
   
-      <mat-form-field>
-        <input matInput placeholder="Age">
-      </mat-form-field>
     </mat-expansion-panel>
   </mat-accordion>

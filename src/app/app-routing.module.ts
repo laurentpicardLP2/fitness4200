@@ -11,11 +11,13 @@ const routes: Routes = [
   //{ path: 'facility-category-booking', component: FacilityCategoryBookingComponent},
   //{ path: 'facility-booking', component: FacilityBookingComponent, outlet: 'booking-router-outlet' }
 
-  // { path: 'seance-booking', component: SeanceBookingComponent, children: [
-  //   { path: 'facility-category-booking', component: FacilityCategoryBookingComponent, outlet: 'booking-router-outlet' }] }
+  { path: 'seance-booking', component: SeanceBookingComponent, children: [
+    { path: 'facility-category-booking', component: FacilityCategoryBookingComponent, outlet: 'facility-category-router-outlet' },
+    { path: 'facility-booking', component: FacilityBookingComponent, outlet: 'facility-router-outlet' }] }
 
-    { path: 'seance-booking', component: SeanceBookingComponent, children: [
-      { path: ':timestamp', component: FacilityCategoryBookingComponent, outlet: 'booking-router-outlet' }] }
+    // { path: 'seance-booking', component: SeanceBookingComponent, children: [
+    //   { path: ':timestamp', component: FacilityCategoryBookingComponent, outlet: 'booking-router-outlet' }, 
+    // ] }
 ];
 
 @NgModule({
