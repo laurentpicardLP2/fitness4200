@@ -4,13 +4,15 @@ import { Customer } from '../models/customer.model';
 import { Authority } from '../models/authority.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerService {
   
-  constructor(private httpClient: HttpClient) { 
+  constructor(private httpClient: HttpClient,
+              private router: Router) { 
 
   }
 
@@ -55,6 +57,13 @@ export class CustomerService {
     this.httpClient.post<Customer>('http://localhost:8080/userctrl/addcustomer', newCustomer).subscribe(
       ()=> console.log("ok"), 
       (error) => console.log("ko")
+    );
+  }
+
+  public register(newCustomer: Customer){
+    this.httpClient.post<Customer>('http://localhost:8080/userctrl/newcustomer', newCustomer).subscribe(
+        (newUsers) =>{ console.log("création user OK : ", newUsers); this.router.navigate(['']);},
+        (error) => console.log("création user pb : ", error) 
     );
   }
 

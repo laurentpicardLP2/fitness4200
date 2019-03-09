@@ -15,6 +15,7 @@ import { SeanceBookingComponent } from './booking/seance-booking/seance-booking.
 import { CustomerNewComponent } from './user/customer-new/customer-new.component';
 import { FacilityBookingComponent } from './booking/facility-booking/facility-booking.component';
 import { FacilityCategoryBookingComponent } from './booking/facility-category-booking/facility-category-booking.component';
+import { LoginComponent } from './user/login/login.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { FacilityCategoryBookingComponent } from './booking/facility-category-bo
     CustomerNewComponent,
     FacilityBookingComponent,
     FacilityCategoryBookingComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

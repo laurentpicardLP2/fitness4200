@@ -44,9 +44,8 @@ export class BookingService {
 
 public timestampSubject: BehaviorSubject<string> = new BehaviorSubject(null);
 
-  setSubject(value){
+public  setTimestampSubject(value: string){
     if(value){
-      console.log("value : ", value);
       this.timestampSubject.next(value);
     } else {
       this.timestampSubject.next(null);

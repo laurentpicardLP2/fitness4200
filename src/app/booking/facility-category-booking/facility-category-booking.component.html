@@ -5,7 +5,7 @@
     <mat-expansion-panel *ngFor="let facilityCategory of listFacilityCategories | async">
       <mat-expansion-panel-header>
         <mat-panel-title>
-             {{ facilityCategory.facilityCategoryName }} ({{ facilityCategory.quantityAvailable }} )
+             {{ facilityCategory.facilityCategoryName }} (dispo : {{ facilityCategory.quantityAvailable }} )
         </mat-panel-title>
       </mat-expansion-panel-header>
   

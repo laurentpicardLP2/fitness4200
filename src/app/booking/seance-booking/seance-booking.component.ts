@@ -130,12 +130,12 @@ export class SeanceBookingComponent implements OnInit {
   }
 
   routingInit(){
-    this.bookingService.setSubject(this.getDateTimeFields());
+    this.bookingService.setTimestampSubject(this.getDateTimeFields());
     //this.router.navigate(['/seance-booking', {outlets: {'booking-router-outlet' : ['facility-category-booking']}}]);
   }
 
   public onChangeDateTime() {
-    this.bookingService.setSubject(this.getDateTimeFields());
+    this.bookingService.setTimestampSubject(this.getDateTimeFields());
     this.router.navigate(['/seance-booking', {outlets: {'facility-category-router-outlet' : ['facility-category-booking']}}]);
   }
 

@@ -27,11 +27,12 @@ export class FacilityCategoryBookingComponent implements OnInit {
 
   ngOnInit() {
     //this.timestamp = this.route.snapshot.params['timestamp']; // contient la tranche horaire sélectionnée
+    // => remplacé par un BehaviourSubject
     this.bookingService.timestampSubject.subscribe(res => {
       this.timestamp = res;
       this.bookingService.publishFacilityCategories(this.timestamp);
       this.listFacilityCategories = this.bookingService.listFacilityCategories$;
-    })
+    });
     
 
   }

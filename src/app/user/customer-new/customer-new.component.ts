@@ -1,14 +1,10 @@
-
-import { map } from 'rxjs/operators';
-import { async } from '@angular/core/testing';
 import { CustomerService } from '../../services/customer.service';
 import { Customer } from '../../models/customer.model';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators, FormBuilder, AbstractControl} from '@angular/forms';
 import { CustomValidators, ConfirmValidParentMatcher, regExps,  errorMessages} from '../../services/custom-validators.service';
 import { HttpClient } from '@angular/common/http';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
+
 
 
 @Component({
@@ -44,7 +40,6 @@ export class CustomerNewComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private customerService: CustomerService,
-    private router: Router,
     private httpClient: HttpClient
 ) {
     this.createForm();
@@ -137,7 +132,7 @@ export class CustomerNewComponent implements OnInit {
       
   }
 
-  register(): void {
+  onRegister(): void {
       this.newCustomer = new Customer(
                 this.username,
                 this.fullName,  
@@ -155,10 +150,7 @@ export class CustomerNewComponent implements OnInit {
                 this.deliveryCountry,
                 );
 
-    this.httpClient.post<Customer>('http://localhost:8080/userctrl/newcustomer', this.newCustomer).subscribe(
-        (newUsers) =>{ console.log("création user OK : ", newUsers); this.router.navigate(['']);},
-        (error) => console.log("création user pb : ", error) 
-    );
+    this.customerService.register(this.newCustomer);
  }
 
   checkUsername(group: FormGroup){
