@@ -20,7 +20,6 @@ export class Customer{
         public deliveryAddress: string,
         public deliveryCp: string,
         public deliveryCity: string,
-        public deliveryCountry: string
-        
+        public deliveryCountry: string       
     ) {}
 }

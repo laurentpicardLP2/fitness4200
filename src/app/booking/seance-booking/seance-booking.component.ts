@@ -2,6 +2,9 @@ import { BookingService } from './../../services/booking.service';
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators, FormBuilder, AbstractControl} from '@angular/forms';
 import { Router } from '@angular/router';
+import { SeanceService } from 'src/app/services/seance.service';
+import { CommandService } from 'src/app/services/command.service';
+import { Command } from 'src/app/models/command.model';
 
 
 @Component({
@@ -31,20 +34,30 @@ export class SeanceBookingComponent implements OnInit {
   selectedDay: string;
   selectedConcatFields: string;
   isOpen: boolean;
+  currentCommand: Command;
+  isOnInit: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private bookingService: BookingService) {
+    private bookingService: BookingService,
+    private seanceService: SeanceService,
+    private commandService: CommandService) {
       this.createForm();
       this.isOpen = true;
       this.initDateBookingField();
       this.initTimeBookingField();
       this.routingInit();
-      this.bookingService = bookingService;
    }
 
   ngOnInit() {
+    this.commandService.commandSubject.subscribe(res => {
+      this.currentCommand = res;
+      if (this.isOnInit){
+        this.seanceService.addSeanceToCommand(this.currentCommand);
+        this.isOnInit = false;
+      }
+    });
     
   }
 

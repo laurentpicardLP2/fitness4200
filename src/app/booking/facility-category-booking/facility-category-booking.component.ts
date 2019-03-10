@@ -5,6 +5,8 @@ import { BookingService } from '../../services/booking.service';
 import { FacilityAvailableAdaptater } from '../../models/facility-available-adaptater.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { CommandService } from '../../services/command.service';
+import { Command } from '../../models/command.model';
 
 @Component({
   selector: 'app-facility-category-booking',
@@ -15,12 +17,14 @@ export class FacilityCategoryBookingComponent implements OnInit {
   panelOpenState = false;
   timestamp: string;
   listFacilityCategories: BehaviorSubject<FacilityAvailableAdaptater[]>;
+  currentCommand: Command;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private bookingService: BookingService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private commandService: CommandService
     ) { 
       
       }
@@ -34,11 +38,13 @@ export class FacilityCategoryBookingComponent implements OnInit {
       this.listFacilityCategories = this.bookingService.listFacilityCategories$;
     });
     
-
+    this.commandService.commandSubject.subscribe(res => {
+      this.currentCommand = res;
+    });
   }
 
   onBookingFacility(){
-    console.log("onBookingFacility()")
+    console.log("this.currentCommand : ", this.currentCommand.items[this.currentCommand.items.length-1]);
     this.router.navigate(['/seance-booking', {outlets: {'facility-router-outlet' : ['facility-booking']}}]);
   }
   
