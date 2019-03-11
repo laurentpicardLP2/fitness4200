@@ -7,6 +7,9 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { CommandService } from '../../services/command.service';
 import { Command } from '../../models/command.model';
+import { SeanceService } from 'src/app/services/seance.service';
+import { Seance } from '../../models/seance.model';
+
 
 @Component({
   selector: 'app-facility-category-booking',
@@ -15,16 +18,19 @@ import { Command } from '../../models/command.model';
 })
 export class FacilityCategoryBookingComponent implements OnInit {
   panelOpenState = false;
-  timestamp: string;
+  refFimestamp: string;
   listFacilityCategories: BehaviorSubject<FacilityAvailableAdaptater[]>;
-  currentCommand: Command;
+  command: Command;
+  seance: Seance;
+  facilityName: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private bookingService: BookingService,
     private httpClient: HttpClient,
-    private commandService: CommandService
+    private commandService: CommandService,
+    private seanceService: SeanceService
     ) { 
       
       }
@@ -33,18 +39,27 @@ export class FacilityCategoryBookingComponent implements OnInit {
     //this.timestamp = this.route.snapshot.params['timestamp']; // contient la tranche horaire sélectionnée
     // => remplacé par un BehaviourSubject
     this.bookingService.timestampSubject.subscribe(res => {
-      this.timestamp = res;
-      this.bookingService.publishFacilityCategories(this.timestamp);
+      this.refFimestamp = res;
+      this.bookingService.publishFacilityCategories(this.refFimestamp);
       this.listFacilityCategories = this.bookingService.listFacilityCategories$;
     });
     
     this.commandService.commandSubject.subscribe(res => {
-      this.currentCommand = res;
+      this.command = res;
     });
+
+    this.seanceService.seanceSubject.subscribe(res => {
+      this.seance = res;
+    });
+
+    // this.seanceService.facilityNameSubject.subscribe(res => {
+    //   this.facilityName = res;
+    // });
   }
 
-  onBookingFacility(){
-    console.log("this.currentCommand : ", this.currentCommand.items[this.currentCommand.items.length-1]);
+  onBookingFacility(facilityName: string, facilityCategoryName: string){
+    this.seanceService.addTimestampFacilityToSeance(this.seance, this.refFimestamp, facilityName, facilityCategoryName);
+    //this.seanceService.setFacilityNameSubject(facilityName);
     this.router.navigate(['/seance-booking', {outlets: {'facility-router-outlet' : ['facility-booking']}}]);
   }
   

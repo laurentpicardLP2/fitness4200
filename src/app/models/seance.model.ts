@@ -3,7 +3,7 @@ import { Item } from './item.model';
 import { TimestampFacility } from './timestamp-facility.model';
 
 export class Seance extends Item {
-    public timestampFacilities: TimestampFacility;
+    public timestampFacilities: TimestampFacility [];
     
     constructor(public idItem: number,
                 public price : number) {

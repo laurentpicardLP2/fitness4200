@@ -35,7 +35,7 @@ export class BookingService {
       this.listFacilityCategories = facilityCategoriesList;
       for(let i of this.listFacilityCategories) {
         for(let j of i.facilities) {
-          console.log(j.facilityName);
+          //console.log(j.facilityName);
         }
       }
       this.listFacilityCategories$.next(this.listFacilityCategories);

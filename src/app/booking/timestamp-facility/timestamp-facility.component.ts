@@ -1,29 +1,33 @@
 import { Component, OnInit } from '@angular/core';
+import { CommandService } from '../../services/command.service';
 
 import { Command } from '../../models/command.model';
 import { TimestampFacility } from '../../models/timestamp-facility.model';
 import { Seance } from '../../models/seance.model';
 import { SeanceService } from 'src/app/services/seance.service';
 
-
 @Component({
-  selector: 'app-facility-booking',
-  templateUrl: './facility-booking.component.html',
-  styleUrls: ['./facility-booking.component.css']
+  selector: 'app-timestamp-facility',
+  templateUrl: './timestamp-facility.component.html',
+  styleUrls: ['./timestamp-facility.component.css']
 })
-export class FacilityBookingComponent implements OnInit {
+export class TimestampFacilityComponent implements OnInit {
+
   timestampFacilities: TimestampFacility[]
   seance: Seance;
-  facilityName: string;
+  command: Command;
+  
 
-  constructor(private seanceService: SeanceService) { }
+  constructor(private commandService: CommandService,
+              private seanceService: SeanceService) { }
 
   ngOnInit() {
 
-    this.seanceService.seanceSubject.subscribe(res => {
-      this.seance = res;
-      this.timestampFacilities = res.timestampFacilities;
-    });
+    // this.seanceService.seanceSubject.subscribe(res => {
+    //   this.seance = res;
+    //   this.timestampFacilities = res.timestampFacilities;
+    //   console.log(" this.timestampFacilities : ",  this.timestampFacilities);
+    // });
 
     // this.commandService.commandSubject.subscribe(res => {
     //   this.command = res;
@@ -37,5 +41,4 @@ export class FacilityBookingComponent implements OnInit {
       
     // });
   }
-
 }

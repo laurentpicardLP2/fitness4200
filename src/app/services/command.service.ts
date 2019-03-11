@@ -24,7 +24,6 @@ export class CommandService {
   }
 
   public initCommand(user: User){
-    console.log("initCommand");
     this.httpClient.post<Command>('http://localhost:8080/commandctrl/addcommand/' + user.username, null).subscribe(
         (command) =>{ console.log("init command OK : ", command); this.setCommandSubject(command); this.router.navigate(['']);},
         (error) => { console.log("init command pb : ", error); this.setCommandSubject(null); this.router.navigate(['']);}

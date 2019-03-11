@@ -5,9 +5,7 @@ import { Seance } from './seance.model';
 export class TimestampFacility {
     public idTimestampFacillity: number;
     public refTimestamp: string;
-    public facility: Facility;
-    public facilityCategory: FacilityCategory;
-    public seance: Seance;
+    public facilityName: string;
 
     constructor() {}
 }

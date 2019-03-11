@@ -1,43 +1,5 @@
-<p>
-  facility-booking works!
-</p>
-<p>
-    facility-booking works!
-  </p>
-  <p>
-      facility-booking works!
-    </p>
-    <p>
-        facility-booking works!
-      </p>
-      <p>
-          facility-booking works!
-        </p>
-        <p>
-            facility-booking works!
-          </p>
-          <p>
-              facility-booking works!
-            </p>
-            <p>
-                facility-booking works!
-              </p>
-              <p>
-                  facility-booking works!
-                </p>
-                <p>
-                    facility-booking works!
-                  </p>
-                  <p>
-                      facility-booking works!
-                    </p>
-                    <p>
-                        facility-booking works!
-                      </p>
-                      <p>
-                          facility-booking works!
-                        </p>
-                        <p>
-                            facility-booking works!
-                          </p>
-                                                                                                                                                                                      
+<table>
+  <tr *ngFor="let timestampFacility of timestampFacilities">
+    <td><em>{{ timestampFacility.facilityName }}</em> : <br>{{ timestampFacility.refTimestamp }}</td>
+  </tr>
+</table>

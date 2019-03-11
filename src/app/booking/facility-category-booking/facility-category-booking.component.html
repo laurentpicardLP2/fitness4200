@@ -12,7 +12,7 @@
 
       <table>
         <tr *ngFor="let facility of facilityCategory.facilities">
-          <td><a mat-flat-button (click)="onBookingFacility()">{{ facility.facilityName }}</a></td>
+          <td><a mat-flat-button (click)="onBookingFacility(facility.facilityName, facilityCategory.facilityCategoryName)">{{ facility.facilityName }}</a></td>
         </tr>
       </table>
       
