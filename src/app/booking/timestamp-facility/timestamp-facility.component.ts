@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CommandService } from '../../services/command.service';
+import { CommandService } from 'src/app/services/command.service';
 
-import { Command } from '../../models/command.model';
-import { TimestampFacility } from '../../models/timestamp-facility.model';
-import { Seance } from '../../models/seance.model';
+import { Command } from 'src/app/models/command.model';
+import { TimestampFacility } from 'src/app/models/timestamp-facility.model';
+import { Seance } from 'src/app/models/seance.model';
 import { SeanceService } from 'src/app/services/seance.service';
 
 @Component({

@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
-import { CommandService } from '../../services/command.service';
-import { Command } from '../../models/command.model';
+import { CommandService } from 'src/app/services/command.service';
+import { Command } from 'src/app/models/command.model';
 
 @Component({
   selector: 'app-header',

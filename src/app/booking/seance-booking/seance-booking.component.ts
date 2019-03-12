@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { SeanceService } from 'src/app/services/seance.service';
 import { CommandService } from 'src/app/services/command.service';
 import { Command } from 'src/app/models/command.model';
-
+import { Seance } from 'src/app/models/seance.model';
 
 @Component({
   selector: 'app-seance-booking',
@@ -35,6 +35,7 @@ export class SeanceBookingComponent implements OnInit {
   selectedConcatFields: string;
   isOpen: boolean;
   currentCommand: Command;
+  seance: Seance;
   isOnInit: boolean = true;
 
   constructor(
@@ -58,6 +59,12 @@ export class SeanceBookingComponent implements OnInit {
         this.isOnInit = false;
       }
     });
+
+    this.seanceService.seanceSubject.subscribe(res => {
+      this.seance = res;
+    });
+
+    this.seanceService.setIsBookedTimestampSubject(false);
     
   }
 
@@ -114,6 +121,7 @@ export class SeanceBookingComponent implements OnInit {
       this.shownHour="06";
     } else if(this.currentHour < 10) {
       this.shownHour = "0" + this.currentHour.toString();
+
     } else if(this.currentHour < 22) {
       this.shownHour = this.currentHour.toString();
       //else passer à la journée suivante
@@ -133,13 +141,12 @@ export class SeanceBookingComponent implements OnInit {
       this.shownMinute = "50";
     } else {
       this.shownMinute = "00";
-      this.shownHour = (this.currentHour + 1).toString();
+      this.shownHour = (this.currentHour + 1).toString(); // bug à 08:50
     }
     //else passer à la journée suivante
     
    this.strTimeOfBooking = this.shownHour + ":" + this.shownMinute;
-
-  ;
+  
   }
 
   routingInit(){
@@ -150,6 +157,14 @@ export class SeanceBookingComponent implements OnInit {
   public onChangeDateTime() {
     this.bookingService.setTimestampSubject(this.getDateTimeFields());
     this.router.navigate(['/seance-booking', {outlets: {'facility-category-router-outlet' : ['facility-category-booking']}}]);
+    let isBookedTimestamp = false;
+    let refFimestamp = this.getDateTimeFields();
+      for(let i=0; i< this.seance.timestampFacilities.length; i++){
+        if(this.seance.timestampFacilities[i].refTimestamp === refFimestamp){
+          isBookedTimestamp = true;
+        }
+      }
+    this.seanceService.setIsBookedTimestampSubject(isBookedTimestamp);
   }
 
   getDateTimeFields(){

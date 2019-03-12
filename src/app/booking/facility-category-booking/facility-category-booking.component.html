@@ -1,7 +1,6 @@
 
       
-
-<mat-accordion>
+<mat-accordion *ngIf="!isBookedTimestamp">
     <mat-expansion-panel *ngFor="let facilityCategory of listFacilityCategories | async">
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -19,3 +18,7 @@
   
     </mat-expansion-panel>
   </mat-accordion>
+
+  <br>
+  <div style="text-align: center;"><button mat-raised-button color="accent">Valider séance</button></div>
+  

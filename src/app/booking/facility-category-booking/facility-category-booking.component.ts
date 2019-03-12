@@ -5,10 +5,10 @@ import { BookingService } from '../../services/booking.service';
 import { FacilityAvailableAdaptater } from '../../models/facility-available-adaptater.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { CommandService } from '../../services/command.service';
-import { Command } from '../../models/command.model';
+import { CommandService } from 'src/app/services/command.service';
+import { Command } from 'src/app/models/command.model';
 import { SeanceService } from 'src/app/services/seance.service';
-import { Seance } from '../../models/seance.model';
+import { Seance } from 'src/app/models/seance.model';
 
 
 @Component({
@@ -23,6 +23,8 @@ export class FacilityCategoryBookingComponent implements OnInit {
   command: Command;
   seance: Seance;
   facilityName: string;
+  isBookedTimestamp: boolean;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -52,14 +54,14 @@ export class FacilityCategoryBookingComponent implements OnInit {
       this.seance = res;
     });
 
-    // this.seanceService.facilityNameSubject.subscribe(res => {
-    //   this.facilityName = res;
-    // });
+    this.seanceService.isBookedTimestampSubject.subscribe(res => {
+      this.isBookedTimestamp = res;
+    });
   }
 
   onBookingFacility(facilityName: string, facilityCategoryName: string){
     this.seanceService.addTimestampFacilityToSeance(this.seance, this.refFimestamp, facilityName, facilityCategoryName);
-    //this.seanceService.setFacilityNameSubject(facilityName);
+    this.seanceService.setIsBookedTimestampSubject(true);
     this.router.navigate(['/seance-booking', {outlets: {'facility-router-outlet' : ['facility-booking']}}]);
   }
   

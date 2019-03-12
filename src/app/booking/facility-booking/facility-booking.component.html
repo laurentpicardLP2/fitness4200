@@ -1,5 +1,8 @@
-<table>
-  <tr *ngFor="let timestampFacility of timestampFacilities">
-    <td><em>{{ timestampFacility.facilityName }}</em> : <br>{{ timestampFacility.refTimestamp }}</td>
-  </tr>
-</table>
+<div class="seanceTitle">Votre séance du {{ getDateSeance() }} : </div>
+
+<mat-form-field class="example-form-field" *ngFor="let timestampFacility of timestampFacilities">
+  <input matInput type="text" readonly placeholder="{{ timestampFacility.facilityName }} : {{ convertIntoTime(timestampFacility.refTimestamp) }}" >
+  <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="onDeleteTimestamp(timestampFacility.idTimestampFacillity)">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
