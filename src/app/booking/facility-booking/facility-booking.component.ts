@@ -44,9 +44,9 @@ export class FacilityBookingComponent implements OnInit {
     // });
   }
 
-  public onDeleteTimestamp(idTimestampFacillity) {
-    console.log("onDeleteTimestamp(), id :", idTimestampFacillity);
-    this.seanceService.removeTimestampFacilityFromSeance(this.seance, idTimestampFacillity);
+  public onDeleteTimestamp(idTimestampFacility) {
+    console.log("onDeleteTimestamp(), id :", idTimestampFacility);
+    this.seanceService.removeTimestampFacilityFromSeance(this.seance, idTimestampFacility);
   }
 
   public getDateSeance(): string{

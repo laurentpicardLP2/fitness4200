@@ -1,18 +1,19 @@
 import { BookingService } from './../../services/booking.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators, FormBuilder, AbstractControl} from '@angular/forms';
 import { Router } from '@angular/router';
 import { SeanceService } from 'src/app/services/seance.service';
 import { CommandService } from 'src/app/services/command.service';
 import { Command } from 'src/app/models/command.model';
 import { Seance } from 'src/app/models/seance.model';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-seance-booking',
   templateUrl: './seance-booking.component.html',
   styleUrls: ['./seance-booking.component.css']
 })
-export class SeanceBookingComponent implements OnInit {
+export class SeanceBookingComponent implements OnInit, OnDestroy {
   seanceBookingForm: FormGroup;
   timeOfBooking: Date;
   strTimeOfBooking: string;
@@ -34,7 +35,8 @@ export class SeanceBookingComponent implements OnInit {
   selectedDay: string;
   selectedConcatFields: string;
   isOpen: boolean;
-  currentCommand: Command;
+  command: Command;
+  username: string;
   seance: Seance;
   isOnInit: boolean = true;
 
@@ -43,7 +45,8 @@ export class SeanceBookingComponent implements OnInit {
     private router: Router,
     private bookingService: BookingService,
     private seanceService: SeanceService,
-    private commandService: CommandService) {
+    private commandService: CommandService,
+    private loginService: LoginService) {
       this.createForm();
       this.isOpen = true;
       this.initDateBookingField();
@@ -52,10 +55,13 @@ export class SeanceBookingComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.loginService.usernameSubject.subscribe(res => {
+      this.username = res;
+    });
     this.commandService.commandSubject.subscribe(res => {
-      this.currentCommand = res;
+      this.command = res;
       if (this.isOnInit){
-        this.seanceService.addSeanceToCommand(this.currentCommand);
+        this.seanceService.addSeanceToCommand(this.command, this.username);
         this.isOnInit = false;
       }
     });
@@ -66,6 +72,11 @@ export class SeanceBookingComponent implements OnInit {
 
     this.seanceService.setIsBookedTimestampSubject(false);
     
+  }
+
+  ngOnDestroy(){
+    console.log("destroy");
+    this.seanceService.removeSeanceFromCommand(this.command, this.seance);
   }
 
   public onShowTime(){

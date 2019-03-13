@@ -35,8 +35,8 @@ export class SeanceService {
     }
   }
 
-  public addSeanceToCommand(command: Command){
-    this.httpClient.post<Seance>('http://localhost:8080/seancectrl/addseance/' + command.idCommand, null).subscribe(
+  public addSeanceToCommand(command: Command, username: string){
+    this.httpClient.post<Seance>('http://localhost:8080/seancectrl/addseance/' + command.idCommand + '/' + username, null).subscribe(
         (seance) =>{ 
           command.items.push(seance); 
           this.commandService.setCommandSubject(command);
@@ -46,8 +46,20 @@ export class SeanceService {
     );
   }
 
+  public removeSeanceFromCommand(command: Command, seance: Seance){
+    this.httpClient.delete('http://localhost:8080//seancectrl/deleteseance/' + seance.idItem).subscribe(
+        () =>{ 
+          console.log("reset seance OK : ",seance.idItem);
+          command.items.splice(command.items.findIndex((item)=> item.idItem === seance.idItem), 1); 
+          this.commandService.setCommandSubject(command); 
+          console.log("reset command : ", command);
+        },
+        (error) => { console.log("init timestamp pb : ", error); }
+    );
+  }
+
   public addTimestampFacilityToSeance(seance: Seance, refFimestamp: string, facilityName: string, facilityCategoryName: string){
-    this.httpClient.post<TimestampFacility>('http://localhost:8080//timestampfacilityctrl/addtimestampfacility/' + 
+    this.httpClient.post<TimestampFacility>('http://localhost:8080//timestampfacilityctrl/addtimestampfacility/' + seance.idItem + '/' +
     refFimestamp + '/' + facilityName + '/' + facilityCategoryName, null).subscribe(
         (timestampFacility) =>{ 
           console.log("init timestamp OK : ", timestampFacility);
@@ -60,11 +72,11 @@ export class SeanceService {
     );
   }
 
-  public removeTimestampFacilityFromSeance(seance: Seance, idTimestampFacillity: number){
-    this.httpClient.delete('http://localhost:8080//timestampfacilityctrl/deletetimestampfacility/' + idTimestampFacillity).subscribe(
+  public removeTimestampFacilityFromSeance(seance: Seance, idTimestampFacility: number){
+    this.httpClient.delete('http://localhost:8080//timestampfacilityctrl/deletetimestampfacility/' + idTimestampFacility).subscribe(
         () =>{ 
           console.log("reset timestamp OK : ");
-          seance.timestampFacilities.splice(seance.timestampFacilities.findIndex((timestampFacility)=> timestampFacility.idTimestampFacillity === idTimestampFacillity), 1); 
+          seance.timestampFacilities.splice(seance.timestampFacilities.findIndex((timestampFacility)=> timestampFacility.idTimestampFacility === idTimestampFacility), 1); 
            //this.commandService.setCommandSubject(command);
           this.setSeanceSubject(seance);  
         },

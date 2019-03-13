@@ -12,21 +12,35 @@ export class LoginService {
   constructor(private httpClient: HttpClient,
               private commandService: CommandService) { }
 
-  public loginSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
+  public isUserLoggedSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
 
-  public setLoginSubject(value: boolean){
+  public setIsUserLoggeSubject(value: boolean){
     if(value){
-      this.loginSubject.next(value);
+      this.isUserLoggedSubject.next(value);
     } else {
-      this.loginSubject.next(null);
+      this.isUserLoggedSubject.next(null);
+    }
+  }
+
+  public usernameSubject: BehaviorSubject<string> = new BehaviorSubject(null);
+
+  public setUsernameSubject(value: string){
+    if(value){
+      this.usernameSubject.next(value);
+    } else {
+      this.usernameSubject.next(null);
     }
   }
 
   public signIn(user: User){
     
     this.httpClient.post<User>('http://localhost:8080/userctrl/login', user).subscribe(
-        (user) =>{  this.setLoginSubject(true); this.commandService.initCommand(user); console.log("login user OK : ", user);},
-        (error) => { console.log("login user pb : ", error); this.setLoginSubject(false); }
+        (user) =>{  this.setIsUserLoggeSubject(true); 
+                    this.commandService.initCommand(user); 
+                    this.setUsernameSubject(user.username); 
+                    console.log("login user OK : ", user);
+        },
+        (error) => { console.log("login user pb : ", error); this.setIsUserLoggeSubject(false); }
     );
   }
 

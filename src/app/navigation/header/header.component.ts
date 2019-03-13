@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
               private commandService: CommandService) { }
 
   ngOnInit(){
-    this.loginService.loginSubject.subscribe(res => {
+    this.loginService.isUserLoggedSubject.subscribe(res => {
       this.isAuth = res;
     });
 

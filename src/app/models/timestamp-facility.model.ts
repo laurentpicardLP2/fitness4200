@@ -4,7 +4,7 @@ import { Seance } from './seance.model';
 
 export class TimestampFacility {
     //idTimestampFacillity à corriger
-    public idTimestampFacillity: number;
+    public idTimestampFacility: number;
     public refTimestamp: string;
     public facilityName: string;
 
