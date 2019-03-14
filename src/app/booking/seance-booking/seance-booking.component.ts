@@ -39,6 +39,8 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
   username: string;
   seance: Seance;
   isOnInit: boolean = true;
+  isAuth: boolean = false;
+  iValidateSeance: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -71,12 +73,25 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
     });
 
     this.seanceService.setIsBookedTimestampSubject(false);
+
+    this.loginService.isUserLoggedSubject.subscribe(res => {
+      this.isAuth = res;
+    });
+
+
+    this.seanceService.isValidateSeanceSubject.subscribe(res => {
+      this.iValidateSeance = res;
+    });
+
+    this.seanceService.setIsValidateSeanceSubject(false);
     
   }
 
-  ngOnDestroy(){
+  ngOnDestroy(){ // à supprimer
     console.log("destroy");
-    this.seanceService.removeSeanceFromCommand(this.command, this.seance);
+    if(this.isAuth  && !this.iValidateSeance){
+      this.seanceService.removeSeanceFromCommand(this.command, this.seance);
+    }
   }
 
   public onShowTime(){

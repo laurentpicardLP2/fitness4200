@@ -24,7 +24,8 @@ export class FacilityCategoryBookingComponent implements OnInit {
   seance: Seance;
   facilityName: string;
   isBookedTimestamp: boolean;
-
+  isAvailableFacilites: boolean;
+  isNotAvailableFacilities: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,6 +58,11 @@ export class FacilityCategoryBookingComponent implements OnInit {
     this.seanceService.isBookedTimestampSubject.subscribe(res => {
       this.isBookedTimestamp = res;
     });
+
+    this.bookingService.isNotAvailableFacilitiesSubject.subscribe(res => {
+      this.isNotAvailableFacilities = res;
+    });
+
   }
 
   onBookingFacility(facilityName: string, facilityCategoryName: string){

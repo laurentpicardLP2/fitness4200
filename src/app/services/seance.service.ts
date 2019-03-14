@@ -1,9 +1,9 @@
-import { TimestampFacility } from './../models/timestamp-facility.model';
+import { TimestampFacility } from 'src/app/models/timestamp-facility.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CommandService } from './command.service';
-import { Seance } from '../models/seance.model';
-import { Command } from '../models/command.model';
+import { Seance } from 'src/app/models/seance.model';
+import { Command } from 'src/app/models/command.model';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -21,6 +21,16 @@ export class SeanceService {
       this.isBookedTimestampSubject.next(value);
     } else {
       this.isBookedTimestampSubject.next(null);
+    }
+  }
+
+  public isValidateSeanceSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
+
+  public setIsValidateSeanceSubject(value: boolean){
+    if(value){
+      this.isValidateSeanceSubject.next(value);
+    } else {
+      this.isValidateSeanceSubject.next(null);
     }
   }
 
@@ -71,14 +81,24 @@ export class SeanceService {
         (error) => { console.log("init timestamp pb : ", error); }
     );
   }
-
-  public removeTimestampFacilityFromSeance(seance: Seance, idTimestampFacility: number){
+ 
+  public removeTimestampFacilityFromSeance(seance: Seance,  idTimestampFacility: number, refTimestamp: string){
     this.httpClient.delete('http://localhost:8080//timestampfacilityctrl/deletetimestampfacility/' + idTimestampFacility).subscribe(
         () =>{ 
           console.log("reset timestamp OK : ");
           seance.timestampFacilities.splice(seance.timestampFacilities.findIndex((timestampFacility)=> timestampFacility.idTimestampFacility === idTimestampFacility), 1); 
            //this.commandService.setCommandSubject(command);
-          this.setSeanceSubject(seance);  
+          this.setSeanceSubject(seance); 
+
+          let isBookedTimestamp = false;
+          for(let i=0; i< seance.timestampFacilities.length; i++){
+            if(seance.timestampFacilities[i].refTimestamp === refTimestamp){
+              isBookedTimestamp = true;
+            }
+          }
+        console.log("this.isBookedTimestamp : ", isBookedTimestamp);
+        this.setIsBookedTimestampSubject(isBookedTimestamp);
+           
         },
         (error) => { console.log("init timestamp pb : ", error); }
     );

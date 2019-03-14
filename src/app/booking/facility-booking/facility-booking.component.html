@@ -2,7 +2,15 @@
 
 <mat-form-field class="example-form-field" *ngFor="let timestampFacility of timestampFacilities">
   <input matInput type="text" readonly placeholder="{{ timestampFacility.facilityName }} : {{ convertIntoTime(timestampFacility.refTimestamp) }}" >
-  <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="onDeleteTimestamp(timestampFacility.idTimestampFacility)">
+  <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onDeleteTimestamp(timestampFacility.idTimestampFacility)">
     <mat-icon>close</mat-icon>
   </button>
-</mat-form-field>
+</mat-form-field> 
+
+<br>
+  <div style="text-align: center;" *ngIf="isEmptySeance===false"><button mat-raised-button color="accent" (click)="onValidateSeance()">Valider séance</button></div>
+
+  
+
+
+  

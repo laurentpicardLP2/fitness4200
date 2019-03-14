@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Customer } from '../models/customer.model';
-import { Authority } from '../models/authority.model';
+import { Customer } from 'src/app/models/customer.model';
+import { Authority } from 'src/app/models/authority.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
