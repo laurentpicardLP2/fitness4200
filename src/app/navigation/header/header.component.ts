@@ -11,12 +11,13 @@ import { Item } from 'src/app/models/item.model';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  nbItems: string;
-
+  
   @Output() public sidenavToggle = new EventEmitter();
   isAuth: boolean;
   public command: Command;
   public listCommandItems: Item []=[];
+  public username: string;
+  public nbItems: string;
   
 
   constructor(private loginService: LoginService,
@@ -32,12 +33,16 @@ export class HeaderComponent implements OnInit {
       this.command = res;
     }); 
     
-    this.loginService.nbItemsSubject.subscribe(res => {
+    this.commandService.nbItemsSubject.subscribe(res => {
       this.nbItems = res;
     });
 
     this.bookingService.listCommandItemsSubject.subscribe(res => {
       this.listCommandItems = res;
+    });
+
+    this.loginService.usernameSubject.subscribe(res => {
+      this.username = res;
     });
   }
  
@@ -49,8 +54,31 @@ export class HeaderComponent implements OnInit {
   public onToggleCart(){
     
     //document.getElementById("cart").style.display = "block";
-    var popup = document.getElementById("myPopup");
-  popup.classList.toggle("show");
+    var popup = document.getElementById("cartText");
+    popup.classList.toggle("show");
+  }
+
+  public onResetCart(){
+    console.log("onResetCart()");
+    var popup = document.getElementById("cartText");
+    popup.classList.toggle("show");
+    this.commandService.resetCommand(this.command, this.username);
+  }
+
+  public onValidateCart(){
+    var popup = document.getElementById("cartText");
+    popup.classList.toggle("show");
+    let totalCart = 0;
+    for(let i=0; i<this.command.items.length; i++){
+      totalCart = totalCart + this.command.items[i].price;
+    }
+    console.log("totalCart = ", totalCart);
+    this.commandService.validateCommand(this.command);
+  }
+
+  public onContinue(){
+    var popup = document.getElementById("cartText");
+    popup.classList.toggle("show");
   }
 
 }

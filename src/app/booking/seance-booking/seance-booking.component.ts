@@ -40,7 +40,8 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
   seance: Seance;
   isOnInit: boolean = true;
   isAuth: boolean = false;
-  iValidateSeance: boolean = false;
+  isValidateSeance: boolean = false;
+  priceSeance: number[]=[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,9 +55,11 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
       this.initDateBookingField();
       this.initTimeBookingField();
       this.routingInit();
+      this.seanceService.setPriceSeanceSubject(this.priceSeance);
    }
 
   ngOnInit() {
+    console.log('init');
     this.loginService.usernameSubject.subscribe(res => {
       this.username = res;
     });
@@ -80,18 +83,15 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
 
 
     this.seanceService.isValidateSeanceSubject.subscribe(res => {
-      this.iValidateSeance = res;
+      this.isValidateSeance = res;
     });
 
     this.seanceService.setIsValidateSeanceSubject(false);
-    
-  }
 
-  ngOnDestroy(){ // à supprimer
-    console.log("destroy");
-    if(this.isAuth  && !this.iValidateSeance){
-      this.seanceService.removeSeanceFromCommand(this.command, this.seance);
-    }
+    this.seanceService.priceSeanceSubject.subscribe(res => {
+      this.priceSeance = res;
+    });
+    
   }
 
   public onShowTime(){
@@ -201,5 +201,14 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
     return dateFieldsSplit[0] + "_" + dateFieldsSplit[1] + "_" +dateFieldsSplit[2] + "_" + 
     timeFieldsSplit[0] + "_" + (Math.floor(parseInt(timeFieldsSplit[1],10)/10)).toString();
   }
+
+  ngOnDestroy(){ // à supprimer
+    console.log("destroy");
+    if(this.isAuth  && !this.isValidateSeance){
+      this.seanceService.removeSeanceFromCommand(this.command, this.seance);
+      //this.seanceService.priceSeanceSubject.unsubscribe();
+    }
+  }
+
   
 }

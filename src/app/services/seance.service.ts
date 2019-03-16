@@ -5,6 +5,7 @@ import { CommandService } from './command.service';
 import { Seance } from 'src/app/models/seance.model';
 import { Command } from 'src/app/models/command.model';
 import { BehaviorSubject } from 'rxjs';
+import { LoginService } from 'src/app/services/login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,18 @@ import { BehaviorSubject } from 'rxjs';
 export class SeanceService {
 
   constructor(private commandService: CommandService,
-              private httpClient: HttpClient) { }
+              private httpClient: HttpClient,
+              private loginService: LoginService) { }
+
+  public priceSeanceSubject: BehaviorSubject<number[]> = new BehaviorSubject(null);
+
+  public setPriceSeanceSubject(value: number[]){
+    if(value){
+      this.priceSeanceSubject.next(value);
+    } else {
+      this.priceSeanceSubject.next(null);
+    }
+  }
 
   public isBookedTimestampSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
 

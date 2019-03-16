@@ -1,6 +1,6 @@
 import { Command } from 'src/app/models/command.model';
 import { CommandService } from 'src/app/services/command.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { TimestampFacility } from 'src/app/models/timestamp-facility.model';
 import { Seance } from 'src/app/models/seance.model';
@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   templateUrl: './facility-booking.component.html',
   styleUrls: ['./facility-booking.component.css']
 })
-export class FacilityBookingComponent implements OnInit {
+export class FacilityBookingComponent implements OnInit, OnDestroy {
   timestampFacilities: TimestampFacility[];
   refTimestamp: string;
   seance: Seance;
@@ -24,6 +24,8 @@ export class FacilityBookingComponent implements OnInit {
   isBookedTimestamp: boolean;
   nbItems: string;
   command: Command;
+  priceSeance: number[];
+  totalPriceSeance : number = 0;
 
   constructor(private bookingService: BookingService,
               private seanceService: SeanceService,
@@ -47,7 +49,7 @@ export class FacilityBookingComponent implements OnInit {
       this.isBookedTimestamp = res;
     });
 
-    this.loginService.nbItemsSubject.subscribe(res => {
+    this.commandService.nbItemsSubject.subscribe(res => {
       this.nbItems = res;
     });
 
@@ -55,11 +57,25 @@ export class FacilityBookingComponent implements OnInit {
       this.command = res;
     });
 
+    this.seanceService.priceSeanceSubject.subscribe(res => {
+      this.priceSeance = res;
+      if(this.priceSeance.length>0) {
+        this.totalPriceSeance = this.priceSeance.reduce((n1, n2) => n1 + n2);
+      } else {
+        this.totalPriceSeance = 0;
+      }
+    });
+
   }
 
-  public onDeleteTimestamp(idTimestampFacility) {
+  public onDeleteTimestamp(index, idTimestampFacility) {
     console.log("onDeleteTimestamp(), id :", idTimestampFacility);
+    console.log("index :", index);
     this.seanceService.removeTimestampFacilityFromSeance(this.seance, idTimestampFacility, this.refTimestamp);
+    this.priceSeance.splice(index, 1);
+
+    // implémenter un promise
+    this.seanceService.setPriceSeanceSubject(this.priceSeance);
   }
 
   public getDateSeance(): string{
@@ -82,12 +98,17 @@ export class FacilityBookingComponent implements OnInit {
     if(this.nbItems==null || this.nbItems==undefined || this.nbItems=="") {
       this.nbItems = "0"; 
     }
-    this.loginService.setNbItemsSubject((parseInt(this.nbItems, 10) + 1).toString());
-    this.command.items.push(this.seance);
+    this.commandService.setNbItemsSubject((parseInt(this.nbItems, 10) + 1).toString());
+    this.command.items[this.command.items.findIndex((item)=> item.idItem == this.seance.idItem)].price= this.totalPriceSeance;
     this.commandService.setCommandSubject(this.command);
     this.bookingService.setListCommandItemsSubject(this.command.items);
     this.seanceService.setIsValidateSeanceSubject(true);
+    this.seanceService.setPriceSeanceSubject([]);
     this.router.navigate(['']);
+  }
+
+  ngOnDestroy(){
+    //this.seanceService.priceSeanceSubject.unsubscribe();
   }
 
 }

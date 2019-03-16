@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators, FormBuilder, AbstractControl} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BookingService } from '../../services/booking.service';
@@ -16,16 +16,17 @@ import { Seance } from 'src/app/models/seance.model';
   templateUrl: './facility-category-booking.component.html',
   styleUrls: ['./facility-category-booking.component.css']
 })
-export class FacilityCategoryBookingComponent implements OnInit {
-  panelOpenState = false;
+export class FacilityCategoryBookingComponent implements OnInit, OnDestroy {
+ // panelOpenState = false;
   refFimestamp: string;
   listFacilityCategories: BehaviorSubject<FacilityAvailableAdaptater[]>;
   command: Command;
   seance: Seance;
-  facilityName: string;
+  nameFacility: string;
   isBookedTimestamp: boolean;
   isAvailableFacilites: boolean;
   isNotAvailableFacilities: boolean;
+  priceSeance: number[]=[];
 
   constructor(
     private route: ActivatedRoute,
@@ -63,12 +64,24 @@ export class FacilityCategoryBookingComponent implements OnInit {
       this.isNotAvailableFacilities = res;
     });
 
+    this.seanceService.priceSeanceSubject.subscribe(res => {
+      this.priceSeance = res;
+      console.log("this.priceSeance : ", this.priceSeance);
+    });
+
+
   }
 
-  onBookingFacility(facilityName: string, facilityCategoryName: string){
-    this.seanceService.addTimestampFacilityToSeance(this.seance, this.refFimestamp, facilityName, facilityCategoryName);
+  onBookingFacility(nameFacility: string, nameFacilityCategory: string, priceFacilityCategory: number){
+    this.priceSeance.push(priceFacilityCategory);
+    this.seanceService.setPriceSeanceSubject(this.priceSeance);
+    this.seanceService.addTimestampFacilityToSeance(this.seance, this.refFimestamp, nameFacility, nameFacilityCategory);
     this.seanceService.setIsBookedTimestampSubject(true);
     this.router.navigate(['/seance-booking', {outlets: {'facility-router-outlet' : ['facility-booking']}}]);
+  }
+
+  ngOnDestroy(){
+    //this.seanceService.priceSeanceSubject.unsubscribe();
   }
   
 }

@@ -1,5 +1,5 @@
 
- .popup {
+ .cart {
 	 background-color:brown; 
 	 display:block;
 	 position:absolute;
@@ -7,38 +7,27 @@
 	cursor: pointer;
   }
   
-  /* The actual popup (appears on top) */
-  .popup .popuptext {
+  /* The actual cart (appears on top) */
+  .cart .cartText {
 	visibility: hidden;
 	width: 160px;
-	background-color: #555;
-	color: #FF0000;
+	background-color: rgb(116, 23, 23);
+	color: #FFFFFF;
 	text-align: center;
 	border-radius: 6px;
 	padding: 8px 0;
 	position: absolute;
 	z-index: 1;
-	bottom: 125%;
-	left: 50%;
-	margin-left: -80px;
-	top: 50px;
-	height: 50px;
+	bottom: 100%;
+	left: 10%;
+	margin-left: -140px;
+	top: 30px;
+	height: 100px;
   }
   
-  /* Popup arrow */
-  .popup .popuptext::after {
-	content: "";
-	position: absolute;
-	top: 100%;
-	left: 50%;
-	margin-left: -5px;
-	border-width: 5px;
-	border-style: solid;
-	border-color: #555 transparent transparent transparent;
-  }
   
   /* Toggle this class when clicking on the popup container (hide and show the popup) */
-  .popup .show {
+  .cart .show {
 	visibility: visible;
 	-webkit-animation: fadeIn 1s;
 	animation: fadeIn 1s

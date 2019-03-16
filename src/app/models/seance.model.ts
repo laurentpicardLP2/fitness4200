@@ -2,11 +2,11 @@ import { Customer } from './customer.model';
 import { Item } from './item.model';
 import { TimestampFacility } from './timestamp-facility.model';
 
-export class Seance extends Item {
+export class Seance  {
     public timestampFacilities: TimestampFacility [];
+    public statusSeance: number;
     
     constructor(public idItem: number,
-                public price : number) {
-        super(idItem, price);
-    }
+                public typeItem: string,
+                public price : number) { }
 }
