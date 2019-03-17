@@ -72,7 +72,7 @@ export class HeaderComponent implements OnInit {
     for(let i=0; i<this.command.items.length; i++){
       totalCart = totalCart + this.command.items[i].price;
     }
-    console.log("totalCart = ", totalCart);
+    this.command.totalPrice = totalCart;
     this.commandService.validateCommand(this.command);
   }
 

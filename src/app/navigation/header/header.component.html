@@ -26,34 +26,39 @@
         <div class="mat-button-ripple mat-ripple" matripple=""></div>
         <div class="mat-button-focus-overlay"></div>
       </a>
+
+      <a *ngIf="isAuth" class="docs-navbar-hide-small docs-button mat-button ng-star-inserted" _ngcontent-cl="" mat-button="" tabindex="0" aria-disabled="false" routerLink="/command-listing">
+          <span class="mat-button-wrapper">Mes commandes</span>
+        <div class="mat-button-ripple mat-ripple" matripple=""></div>
+        <div class="mat-button-focus-overlay"></div>
+      </a>
+
+
       <a *ngIf="isAuth" class="docs-navbar-hide-small docs-button mat-button ng-star-inserted" _ngcontent-cl="" mat-button="" tabindex="0" aria-disabled="false" (click)="onToggleCart()">
         <mat-icon matBadge="{{ nbItems }}" matBadgeColor="warn">shopping_cart</mat-icon>
       <div class="mat-button-ripple mat-ripple" matripple=""></div>
       <div class="mat-button-focus-overlay"></div>
     </a> 
-    <div id="cart" class="cart">
-      
-        
-            <div class="cartText" id="cartText">
-              
-                  <a class="docs-navbar-hide-small docs-button mat-button ng-star-inserted" _ngcontent-cl="" mat-button="" tabindex="0" aria-disabled="false" (click)="onResetCart()">
-                      <span class="mat-button-wrapper">Vider le panier</span>
-                    <div class="mat-button-ripple mat-ripple" matripple=""></div>
-                    <div class="mat-button-focus-overlay"></div>
-                  </a>
-                  <br> 
-                  <a class="docs-navbar-hide-small docs-button mat-button ng-star-inserted" _ngcontent-cl="" mat-button="" tabindex="0" aria-disabled="false" (click)="onValidateCart()">
-                      <span class="mat-button-wrapper">Valider le panier</span>
-                    <div class="mat-button-ripple mat-ripple" matripple=""></div>
-                    <div class="mat-button-focus-overlay"></div>
-                  </a>
-                  <br>
-                  <a class="docs-navbar-hide-small docs-button mat-button ng-star-inserted" _ngcontent-cl="" mat-button="" tabindex="0" aria-disabled="false" (click)="onContinue()" >
-                      <span class="mat-button-wrapper">Poursuivre les achats</span>
-                    <div class="mat-button-ripple mat-ripple" matripple=""></div>
-                    <div class="mat-button-focus-overlay"></div>
-                  </a>                
-            </div>
+    <div id="cart" class="cart">        
+        <div class="cartText" id="cartText">
+          <a class="docs-navbar-hide-small docs-button mat-button ng-star-inserted" _ngcontent-cl="" mat-button="" tabindex="0" aria-disabled="false" (click)="onResetCart()">
+                  <span class="mat-button-wrapper">Vider le panier</span>
+                <div class="mat-button-ripple mat-ripple" matripple=""></div>
+                <div class="mat-button-focus-overlay"></div>
+              </a>
+              <br> 
+              <a class="docs-navbar-hide-small docs-button mat-button ng-star-inserted" _ngcontent-cl="" mat-button="" tabindex="0" aria-disabled="false" (click)="onValidateCart()">
+                  <span class="mat-button-wrapper">Valider le panier</span>
+                <div class="mat-button-ripple mat-ripple" matripple=""></div>
+                <div class="mat-button-focus-overlay"></div>
+              </a>
+              <br>
+              <a class="docs-navbar-hide-small docs-button mat-button ng-star-inserted" _ngcontent-cl="" mat-button="" tabindex="0" aria-disabled="false" (click)="onContinue()" >
+                  <span class="mat-button-wrapper">Poursuivre les achats</span>
+                <div class="mat-button-ripple mat-ripple" matripple=""></div>
+                <div class="mat-button-focus-overlay"></div>
+              </a>                
+        </div>
           
     </div>   
   </div>       

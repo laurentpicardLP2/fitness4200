@@ -17,5 +17,4 @@ export class SidenavListComponent implements OnInit {
     this.sidenavClose.emit();
   }
   
-
 }

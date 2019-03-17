@@ -59,7 +59,6 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
-    console.log('init');
     this.loginService.usernameSubject.subscribe(res => {
       this.username = res;
     });

@@ -5,10 +5,12 @@ import { SeanceBookingComponent } from './booking/seance-booking/seance-booking.
 import { FacilityCategoryBookingComponent } from './booking/facility-category-booking/facility-category-booking.component';
 import { FacilityBookingComponent } from './booking/facility-booking/facility-booking.component';
 import { LoginComponent } from './user/login/login.component';
+import { CommandListingComponent } from './synthese/command-listing/command-listing.component';
 
 const routes: Routes = [
   { path: 'customer-new', component: CustomerNewComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'command-listing', component: CommandListingComponent },
   //{ path: 'seance-booking', component: SeanceBookingComponent},
   //{ path: 'facility-category-booking', component: FacilityCategoryBookingComponent},
   //{ path: 'facility-booking', component: FacilityBookingComponent, outlet: 'booking-router-outlet' }

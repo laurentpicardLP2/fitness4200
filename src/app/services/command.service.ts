@@ -56,25 +56,13 @@ export class CommandService {
   }
 
   public validateCommand(command: Command){
-    
-    
-    
-    
-
-    this.httpClient.get<Command>('http://localhost:8080/commandctrl/validatecommand/' + command.idCommand).subscribe(
-        (getCommand) =>{ 
-          
-          this.httpClient.put<Command>('http://localhost:8080/commandctrl/validatecommand', command).subscribe(
-            (validatedCommand) =>{ 
-                console.log("validate command OK : ", validatedCommand);
-                //this.setCommandSubject(validatedCommand);
-              },
-              (error) => { console.log("validate command pb : ", error); }
-          );
-                
-          //this.setCommandSubject(validatedCommand);
-        },
-        (error) => { console.log("validate command pb : ", error); }
+    this.httpClient.put<Command>('http://localhost:8080/commandctrl/validatecommand', command).subscribe(
+    (validatedCommand) =>{ 
+        console.log("validate command OK : ", validatedCommand);
+        this.setCommandSubject(validatedCommand);
+      },
+      (error) => { console.log("validate command pb : ", error); }
     );
+      
   }
 }
