@@ -18,6 +18,8 @@ import { FacilityCategoryBookingComponent } from './booking/facility-category-bo
 import { LoginComponent } from './user/login/login.component';
 import { TimestampFacilityComponent } from './booking/timestamp-facility/timestamp-facility.component';
 import { CommandListingComponent } from './synthese/command-listing/command-listing.component';
+import { SeanceListingComponent } from './synthese/seance-listing/seance-listing.component';
+import { SeanceDetailComponent } from './synthese/seance-detail/seance-detail.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { CommandListingComponent } from './synthese/command-listing/command-list
     LoginComponent,
     TimestampFacilityComponent,
     CommandListingComponent,
+    SeanceListingComponent,
+    SeanceDetailComponent,
   ],
   imports: [
     BrowserModule,

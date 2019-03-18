@@ -89,8 +89,8 @@ export class FacilityBookingComponent implements OnInit, OnDestroy {
   public convertIntoTime(pRefTimestamp): string{
     let splittedTimestamp = pRefTimestamp.split("_");
     let hh = splittedTimestamp[3];
-    let scliceMm = splittedTimestamp[4];
-    return hh + ':' + scliceMm + '0';
+    let min = splittedTimestamp[4];
+    return hh + ':' + min;
   }
 
   public onValidateSeance(){
@@ -98,6 +98,7 @@ export class FacilityBookingComponent implements OnInit, OnDestroy {
     if(this.nbItems==null || this.nbItems==undefined || this.nbItems=="") {
       this.nbItems = "0"; 
     }
+    this.seanceService.addDateAndNbTimestamp(this.seance);
     this.commandService.setNbItemsSubject((parseInt(this.nbItems, 10) + 1).toString());
     this.command.items[this.command.items.findIndex((item)=> item.idItem == this.seance.idItem)].price= this.totalPriceSeance;
     this.commandService.setCommandSubject(this.command);

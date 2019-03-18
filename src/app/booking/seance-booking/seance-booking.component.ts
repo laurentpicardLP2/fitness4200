@@ -198,7 +198,7 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
     let timeFieldsSplit = this.strTimeOfBooking.split(":");
 
     return dateFieldsSplit[0] + "_" + dateFieldsSplit[1] + "_" +dateFieldsSplit[2] + "_" + 
-    timeFieldsSplit[0] + "_" + (Math.floor(parseInt(timeFieldsSplit[1],10)/10)).toString();
+    timeFieldsSplit[0] + "_" + timeFieldsSplit[1]; //(Math.floor(parseInt(timeFieldsSplit[1],10)/10)).toString();
   }
 
   ngOnDestroy(){ // à supprimer

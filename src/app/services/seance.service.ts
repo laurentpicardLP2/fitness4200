@@ -80,9 +80,9 @@ export class SeanceService {
     );
   }
 
-  public addTimestampFacilityToSeance(seance: Seance, refFimestamp: string, facilityName: string, facilityCategoryName: string){
+  public addTimestampFacilityToSeance(seance: Seance, refFimestamp: string, facilityName: string, facilityCategoryName: string, dateOfTimestamp: Date){
     this.httpClient.post<TimestampFacility>('http://localhost:8080//timestampfacilityctrl/addtimestampfacility/' + seance.idItem + '/' +
-    refFimestamp + '/' + facilityName + '/' + facilityCategoryName, null).subscribe(
+    refFimestamp + '/' + facilityName + '/' + facilityCategoryName + '/' + dateOfTimestamp, null).subscribe(
         (timestampFacility) =>{ 
           console.log("init timestamp OK : ", timestampFacility);
           timestampFacility.facilityName = facilityName;
@@ -91,6 +91,16 @@ export class SeanceService {
           this.setSeanceSubject(seance);  
         },
         (error) => { console.log("init timestamp pb : ", error); }
+    );
+  }
+
+  public addDateAndNbTimestamp(seance: Seance){
+    this.httpClient.put<Seance>('http://localhost:8080//seancectrl/adddateandnbtimestamp/' + seance.idItem, null).subscribe(
+        (updatedSeance) =>{ 
+          console.log("updated seance OK : ", updatedSeance);
+          this.setSeanceSubject(updatedSeance);  
+        },
+        (error) => { console.log("updated seance pb : ", error); }
     );
   }
  

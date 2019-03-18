@@ -6,7 +6,8 @@ export class TimestampFacility {
     //idTimestampFacillity à corriger
     public idTimestampFacility: number;
     public refTimestamp: string;
-    public facilityName: string;
+    public nameFacility: string;
+    public dateOfTimestamp: Date;
 
     constructor() {}
 }
