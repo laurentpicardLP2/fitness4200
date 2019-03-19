@@ -16,7 +16,7 @@ export class LoginService {
 
   public isUserLoggedSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
 
-  public setIsUserLoggeSubject(value: boolean){
+  public setIsUserLoggedSubject(value: boolean){
     if(value){
       this.isUserLoggedSubject.next(value);
     } else {
@@ -34,26 +34,16 @@ export class LoginService {
     }
   }
 
-  public nbItemsSubject: BehaviorSubject<string> = new BehaviorSubject(null);
-
-  public setNbItemsSubject(value: string){
-    if(value){
-      this.nbItemsSubject.next(value);
-    } else {
-      this.nbItemsSubject.next(null);
-    }
-  }
-
   public signIn(user: User){
     
     this.httpClient.post<User>('http://localhost:8080/userctrl/login', user).subscribe(
-        (user) =>{  this.setIsUserLoggeSubject(true); 
+        (user) =>{  this.setIsUserLoggedSubject(true); 
                     this.commandService.initCommand(user); 
                     this.setUsernameSubject(user.username);
                     this.bookingService.setListCommandItemsSubject(null);
                     console.log("login user OK : ", user);
         },
-        (error) => { console.log("login user pb : ", error); this.setIsUserLoggeSubject(false); }
+        (error) => { console.log("login user pb : ", error); this.setIsUserLoggedSubject(false); }
     );
   }
 

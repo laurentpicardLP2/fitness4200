@@ -80,12 +80,11 @@ export class SeanceService {
     );
   }
 
-  public addTimestampFacilityToSeance(seance: Seance, refFimestamp: string, facilityName: string, facilityCategoryName: string, dateOfTimestamp: Date){
+  public addTimestampFacilityToSeance(seance: Seance, refFimestamp: string, nameFacility: string, nameFacilityCategory: string, dateOfTimestamp: Date){
     this.httpClient.post<TimestampFacility>('http://localhost:8080//timestampfacilityctrl/addtimestampfacility/' + seance.idItem + '/' +
-    refFimestamp + '/' + facilityName + '/' + facilityCategoryName + '/' + dateOfTimestamp, null).subscribe(
+    refFimestamp + '/' + nameFacility + '/' + nameFacilityCategory + '/' + dateOfTimestamp, null).subscribe(
         (timestampFacility) =>{ 
-          console.log("init timestamp OK : ", timestampFacility);
-          timestampFacility.facilityName = facilityName;
+          timestampFacility.nameFacility = nameFacility;
           seance.timestampFacilities.push(timestampFacility); 
            //this.commandService.setCommandSubject(command);
           this.setSeanceSubject(seance);  

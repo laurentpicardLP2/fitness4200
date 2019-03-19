@@ -20,6 +20,7 @@ import { TimestampFacilityComponent } from './booking/timestamp-facility/timesta
 import { CommandListingComponent } from './synthese/command-listing/command-listing.component';
 import { SeanceListingComponent } from './synthese/seance-listing/seance-listing.component';
 import { SeanceDetailComponent } from './synthese/seance-detail/seance-detail.component';
+import { FacilityNewComponent } from './admin/facility-new/facility-new.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { SeanceDetailComponent } from './synthese/seance-detail/seance-detail.co
     CommandListingComponent,
     SeanceListingComponent,
     SeanceDetailComponent,
+    FacilityNewComponent,
   ],
   imports: [
     BrowserModule,

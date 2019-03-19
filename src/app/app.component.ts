@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   constructor(private loginService: LoginService) { }
 
   ngOnInit(){
-    this.loginService.setIsUserLoggeSubject(false);
+    this.loginService.setIsUserLoggedSubject(false);
   }
 }
 

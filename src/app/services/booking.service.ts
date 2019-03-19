@@ -46,7 +46,7 @@ export class BookingService {
    */
   public getFacilityCategories(timestamp: string): Observable<FacilityAvailableAdaptater[]> {
     
-    return this.httpClient.get<FacilityAvailableAdaptater[]>('http://localhost:8080/facilitycategoryctrl/getfacilitycategories/' + timestamp);
+    return this.httpClient.get<FacilityAvailableAdaptater[]>('http://localhost:8080/facilitycategoryctrl/getfacilitycategoriesavailable/' + timestamp);
   }
 
   
