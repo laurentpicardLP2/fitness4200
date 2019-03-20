@@ -1,7 +1,7 @@
 import { Command } from 'src/app/models/command.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FacilityAvailableAdaptater } from '../models/facility-available-adaptater.model';
+import { FacilityAvailableAdaptater } from 'src/app/models/facility-available-adaptater.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Item } from 'src/app/models/item.model';
 

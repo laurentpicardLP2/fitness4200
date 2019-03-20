@@ -12,7 +12,15 @@
 
           <table>
             <tr *ngFor="let facility of facilityCategory.facilities">
-              <td><a mat-flat-button (click)="onBookingFacility(facility.nameFacility, facilityCategory.nameFacilityCategory, facilityCategory.priceFacilityCategory)">{{ facility.nameFacility }}</a> : ({{ facilityCategory.priceFacilityCategory }} €)</td>
+              <td>
+                  {{ facility.nameFacility }} : ({{ facilityCategory.priceFacilityCategory }} €) <br>
+                <span *ngIf="facility.descriptionFacility !='' && facility.imageFacility !=''" >
+                  {{ facility.descriptionFacility }} <img src="assets/images/facilities/{{ facility.imageFacility }}" /> <br></span>
+                <span *ngIf="facility.descriptionFacility !='' && facility.imageFacility ==''" >
+                    {{ facility.descriptionFacility }} <br></span>
+                <span *ngIf="facility.descriptionFacility =='' && facility.imageFacility !=''" >
+                    <img src="assets/images/facilities/{{ facility.imageFacility }}" /> <br></span>
+          <a mat-flat-button (click)="onBookingFacility(facility.nameFacility, facilityCategory.nameFacilityCategory, facilityCategory.priceFacilityCategory)">Sélectionner</a></td>
             </tr>
           </table>   
         

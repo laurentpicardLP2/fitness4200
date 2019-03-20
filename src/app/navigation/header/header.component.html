@@ -9,6 +9,12 @@
   </div>
 
   <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
+      <a class="docs-navbar-hide-small docs-button mat-button ng-star-inserted" _ngcontent-cl="" mat-button="" tabindex="0" aria-disabled="false" (click)="onHome()">
+        <mat-icon>home</mat-icon>
+        <div class="mat-button-ripple mat-ripple" matripple=""></div>
+        <div class="mat-button-focus-overlay"></div>
+      </a>
+
       <a class="docs-navbar-hide-small docs-button mat-button ng-star-inserted" _ngcontent-cl="" mat-button="" tabindex="0" aria-disabled="false" routerLink="/login">
         <mat-icon>person</mat-icon>
         <span class="mat-button-wrapper">SignIn</span>
@@ -21,6 +27,7 @@
         <div class="mat-button-ripple mat-ripple" matripple=""></div>
         <div class="mat-button-focus-overlay"></div>
       </a> 
+
       <a *ngIf="isAuth" class="docs-navbar-hide-small docs-button mat-button ng-star-inserted" _ngcontent-cl="" mat-button="" tabindex="0" aria-disabled="false" routerLink="/seance-booking">
         <span class="mat-button-wrapper">Add Seance</span>
         <div class="mat-button-ripple mat-ripple" matripple=""></div>
@@ -31,6 +38,8 @@
         <div class="mat-button-ripple mat-ripple" matripple=""></div>
         <div class="mat-button-focus-overlay"></div>
       </a>
+
+
       <a *ngIf="isAuth" class="docs-navbar-hide-small docs-button mat-button ng-star-inserted" _ngcontent-cl="" mat-button="" tabindex="0" aria-disabled="false" routerLink="/seance-listing">
         <span class="mat-button-wrapper">Mes séances</span>
         <div class="mat-button-ripple mat-ripple" matripple=""></div>

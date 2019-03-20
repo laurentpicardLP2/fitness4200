@@ -49,7 +49,7 @@ export class AdminService {
 
   public addFacility(idFacilityCategory: number, idRoom: number, nameFacility: string, descriptionFacility:string, imageFacility: string){
    
-    this.httpClient.post<Facility>('http://localhost:8080//adminctrl/addfacility/' + idFacilityCategory + '/' + idRoom + '/' + 
+    this.httpClient.post<Facility>('http://localhost:8080/adminctrl/addfacility/' + idFacilityCategory + '/' + idRoom + '/' + 
     nameFacility + '/' + descriptionFacility + '/' + imageFacility, null).subscribe(
         (addedFacility) =>{ 
           console.log("add Facility OK : ", addedFacility);
@@ -63,11 +63,12 @@ export class AdminService {
     console.log("addImage : ");
     this.httpClient.post(
       'http://localhost:8080/adminctrl/upload', data).subscribe(value => {
-         setTimeout( () => this.addFacility(idFacilityCategory, idRoom, nameFacility, descriptionFacility, imageFacility), 5000);
+          this.addFacility(idFacilityCategory, idRoom, nameFacility, descriptionFacility, imageFacility);
         },
         (error) => {console.log("pb upload fichier ", error);}
       );
   }
+
 
 
 }

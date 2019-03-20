@@ -1,7 +1,7 @@
 <div class="seanceTitle">Votre séance du {{ getDateSeance() }} : </div>
 
 <mat-form-field class="example-form-field" *ngFor="let timestampFacility of timestampFacilities; let i=index">
-  <input matInput type="text" readonly placeholder="{{ timestampFacility.facilityName }} : {{ convertIntoTime(timestampFacility.refTimestamp) }}" >
+  <input matInput type="text" readonly placeholder="{{ timestampFacility.nameFacility }} : {{ convertIntoTime(timestampFacility.refTimestamp) }}" >
   <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onDeleteTimestamp(i, timestampFacility.idTimestampFacility)">
     <mat-icon>close</mat-icon>
   </button>

@@ -6,6 +6,7 @@ import { Seance } from 'src/app/models/seance.model';
 import { Command } from 'src/app/models/command.model';
 import { BehaviorSubject } from 'rxjs';
 import { LoginService } from 'src/app/services/login.service';
+import { TokenStorageService } from './token-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class SeanceService {
 
   constructor(private commandService: CommandService,
               private httpClient: HttpClient,
-              private loginService: LoginService) { }
+              private loginService: LoginService,
+              private token: TokenStorageService) { }
 
   public priceSeanceSubject: BehaviorSubject<number[]> = new BehaviorSubject(null);
 
@@ -58,7 +60,13 @@ export class SeanceService {
   }
 
   public addSeanceToCommand(command: Command, username: string){
-    this.httpClient.post<Seance>('http://localhost:8080/seancectrl/addseance/' + command.idCommand + '/' + username, null).subscribe(
+    this.httpClient.post<Seance>('http://localhost:8080/seancectrl/addseance/' + command.idCommand + '/' + username, null, 
+    {
+      headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.token.getToken()
+      }
+  }).subscribe(
         (seance) =>{ 
           command.items.push(seance); 
           this.commandService.setCommandSubject(command);
@@ -69,7 +77,7 @@ export class SeanceService {
   }
 
   public removeSeanceFromCommand(command: Command, seance: Seance){
-    this.httpClient.delete('http://localhost:8080//seancectrl/deleteseance/' + seance.idItem).subscribe(
+    this.httpClient.delete('http://localhost:8080/seancectrl/deleteseance/' + seance.idItem).subscribe(
         () =>{ 
           console.log("reset seance OK : ",seance.idItem);
           command.items.splice(command.items.findIndex((item)=> item.idItem === seance.idItem), 1); 
@@ -80,9 +88,9 @@ export class SeanceService {
     );
   }
 
-  public addTimestampFacilityToSeance(seance: Seance, refFimestamp: string, nameFacility: string, nameFacilityCategory: string, dateOfTimestamp: Date){
-    this.httpClient.post<TimestampFacility>('http://localhost:8080//timestampfacilityctrl/addtimestampfacility/' + seance.idItem + '/' +
-    refFimestamp + '/' + nameFacility + '/' + nameFacilityCategory + '/' + dateOfTimestamp, null).subscribe(
+  public addTimestampFacilityToSeance(seance: Seance, refFimestamp: string, nameFacility: string, nameFacilityCategory: string){
+    this.httpClient.post<TimestampFacility>('http://localhost:8080/timestampfacilityctrl/addtimestampfacility/' + seance.idItem + '/' +
+    refFimestamp + '/' + nameFacility + '/' + nameFacilityCategory, null).subscribe(
         (timestampFacility) =>{ 
           timestampFacility.nameFacility = nameFacility;
           seance.timestampFacilities.push(timestampFacility); 
@@ -94,7 +102,7 @@ export class SeanceService {
   }
 
   public addDateAndNbTimestamp(seance: Seance){
-    this.httpClient.put<Seance>('http://localhost:8080//seancectrl/adddateandnbtimestamp/' + seance.idItem, null).subscribe(
+    this.httpClient.put<Seance>('http://localhost:8080/seancectrl/adddateandnbtimestamp/' + seance.idItem, null).subscribe(
         (updatedSeance) =>{ 
           console.log("updated seance OK : ", updatedSeance);
           this.setSeanceSubject(updatedSeance);  
@@ -104,7 +112,7 @@ export class SeanceService {
   }
  
   public removeTimestampFacilityFromSeance(seance: Seance,  idTimestampFacility: number, refTimestamp: string){
-    this.httpClient.delete('http://localhost:8080//timestampfacilityctrl/deletetimestampfacility/' + idTimestampFacility).subscribe(
+    this.httpClient.delete('http://localhost:8080/timestampfacilityctrl/deletetimestampfacility/' + idTimestampFacility).subscribe(
         () =>{ 
           console.log("reset timestamp OK : ");
           seance.timestampFacilities.splice(seance.timestampFacilities.findIndex((timestampFacility)=> timestampFacility.idTimestampFacility === idTimestampFacility), 1); 

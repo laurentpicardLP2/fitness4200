@@ -48,6 +48,7 @@ export class HeaderComponent implements OnInit {
  
 
   public onToggleSidenav = () => {
+    
     this.sidenavToggle.emit();
   }
 
@@ -79,6 +80,10 @@ export class HeaderComponent implements OnInit {
   public onContinue(){
     var popup = document.getElementById("cartText");
     popup.classList.toggle("show");
+  }
+
+  public onHome(){
+    this.loginService.signOut();
   }
 
 }

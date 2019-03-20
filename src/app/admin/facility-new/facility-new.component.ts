@@ -39,7 +39,7 @@ export class FacilityNewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loginService.setIsUserLoggedSubject(true);
+    //this.loginService.setIsUserLoggedSubject(true);
     // TO DO reinit setUsername
 
     this.adminService.getFacilityCategories().subscribe(res => {

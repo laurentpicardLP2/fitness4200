@@ -73,26 +73,16 @@ export class FacilityCategoryBookingComponent implements OnInit, OnDestroy {
   }
 
   onBookingFacility(nameFacility: string, nameFacilityCategory: string, priceFacilityCategory: number){
-    let dateOfTimestamp = this.getDateOfRefTimestamp();
     this.priceSeance.push(priceFacilityCategory);
     this.seanceService.setPriceSeanceSubject(this.priceSeance);
     // this.seance.price = this.seance.price + priceFacilityCategory;
     // console.log(" this.seance.price : ", this.seance.price);
     this.seanceService.setSeanceSubject(this.seance);
-    this.seanceService.addTimestampFacilityToSeance(this.seance, this.refFimestamp, nameFacility, nameFacilityCategory, dateOfTimestamp);
+    this.seanceService.addTimestampFacilityToSeance(this.seance, this.refFimestamp, nameFacility, nameFacilityCategory);
     this.seanceService.setIsBookedTimestampSubject(true);
     this.router.navigate(['/seance-booking', {outlets: {'facility-router-outlet' : ['facility-booking']}}]);
   }
 
-  getDateOfRefTimestamp(){
-    let splitRefTimestamp = this.refFimestamp.split("_");
-    let year = parseInt(splitRefTimestamp[0], 10);
-    let month = parseInt(splitRefTimestamp[1], 10)-1;
-    let day = parseInt(splitRefTimestamp[2], 10);
-    let hour = parseInt(splitRefTimestamp[3], 10);
-    let minute = parseInt(splitRefTimestamp[4], 10);
-    return new Date(year, month, day, hour, minute, 0);
-  }
 
   ngOnDestroy(){
     //this.seanceService.priceSeanceSubject.unsubscribe();

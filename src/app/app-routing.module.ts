@@ -9,6 +9,7 @@ import { CommandListingComponent } from './synthese/command-listing/command-list
 import { SeanceListingComponent } from './synthese/seance-listing/seance-listing.component';
 import { SeanceDetailComponent } from './synthese/seance-detail/seance-detail.component';
 import { FacilityNewComponent } from './admin/facility-new/facility-new.component';
+import { TimestampFacilityComponent } from './booking/timestamp-facility/timestamp-facility.component';
 
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'seance-listing', component: SeanceListingComponent },
   { path: 'seance-detail/:idItem', component: SeanceDetailComponent},
   { path: 'facility-new', component: FacilityNewComponent},
+  { path: 'chart', component: TimestampFacilityComponent },
   //{ path: 'seance-booking', component: SeanceBookingComponent},
   //{ path: 'facility-category-booking', component: FacilityCategoryBookingComponent},
   //{ path: 'facility-booking', component: FacilityBookingComponent, outlet: 'booking-router-outlet' }

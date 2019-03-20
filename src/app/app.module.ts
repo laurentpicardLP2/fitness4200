@@ -12,6 +12,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { SeanceBookingComponent } from './booking/seance-booking/seance-booking.component';
+import { TokenStorageService } from './services/token-storage.service';
 import { CustomerNewComponent } from './user/customer-new/customer-new.component';
 import { FacilityBookingComponent } from './booking/facility-booking/facility-booking.component';
 import { FacilityCategoryBookingComponent } from './booking/facility-category-booking/facility-category-booking.component';
@@ -48,7 +49,7 @@ import { FacilityNewComponent } from './admin/facility-new/facility-new.componen
     MatIconModule,
     FlexLayoutModule
   ],
-  providers: [],
+  providers: [TokenStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

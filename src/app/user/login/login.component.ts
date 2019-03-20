@@ -5,7 +5,9 @@ import { Router } from '@angular/router';
 import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators, FormBuilder, AbstractControl} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../models/user.model';
-import { LoginService } from '../../services/login.service';
+import { LoginService } from 'src/app/services/login.service';
+import {TokenStorageService} from 'src/app/services/token-storage.service';
+
 
 
 @Component({
@@ -20,7 +22,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private token: TokenStorageService
 ) {
     this.createForm();
 }
@@ -42,6 +45,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSignIn(): void {
+    this.token.signOut();
     this.loginService.signIn(new User(this.username, this.password));
  }
 
