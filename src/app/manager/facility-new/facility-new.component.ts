@@ -2,8 +2,8 @@ import { LoginService } from 'src/app/services/login.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { FileInformation } from './file-information';
-import { AdminService } from 'src/app/services/admin.service';
+import { FileInformation } from '../file-information';
+import { ManagerService } from 'src/app/services/manager.service';
 import { FacilityCategory } from 'src/app/models/facility-category.model';
 import { Room } from 'src/app/models/room.model';
 import { BehaviorSubject } from 'rxjs';
@@ -33,7 +33,7 @@ export class FacilityNewComponent implements OnInit {
 
   constructor(private httpClient: HttpClient, 
               private formBuilder: FormBuilder,
-              private adminService: AdminService,
+              private managerService: ManagerService,
               private loginService: LoginService) {
  
   }
@@ -42,16 +42,16 @@ export class FacilityNewComponent implements OnInit {
     //this.loginService.setIsUserLoggedSubject(true);
     // TO DO reinit setUsername
 
-    this.adminService.getFacilityCategories().subscribe(res => {
+    this.managerService.getFacilityCategories().subscribe(res => {
       this.facilityCategories = res;
-      this.adminService.publishFacilityCategories();
-      this.listFacilityCategories = this.adminService.listFacilityCategories$;
+      this.managerService.publishFacilityCategories();
+      this.listFacilityCategories = this.managerService.listFacilityCategories$;
     });
 
-    this.adminService.getRooms().subscribe(res => {
+    this.managerService.getRooms().subscribe(res => {
       this.rooms = res;
-      this.adminService.publishRooms();
-      this.listRooms = this.adminService.listRooms$;
+      this.managerService.publishRooms();
+      this.listRooms = this.managerService.listRooms$;
     });
     
     this.createForm();
@@ -93,9 +93,9 @@ export class FacilityNewComponent implements OnInit {
       if (this.file !== undefined){
         this.imageFacility = this.nameFacility + "_" + this.file.name;
         data.append('data', this.file, this.nameFacility + "_" + this.file.name);
-        this.adminService.addImage(data, this.idFacilityCategory, this.idRoom, this.nameFacility, this.descriptionFacility, this.imageFacility);
+        this.managerService.addImage(data, this.idFacilityCategory, this.idRoom, this.nameFacility, this.descriptionFacility, this.imageFacility);
       } else {
-        this.adminService.addFacility(this.idFacilityCategory, this.idRoom, this.nameFacility, this.descriptionFacility, this.imageFacility);
+        this.managerService.addFacility(this.idFacilityCategory, this.idRoom, this.nameFacility, this.descriptionFacility, this.imageFacility);
       }
       
    

@@ -1,3 +1,4 @@
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { LoginService } from 'src/app/services/login.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -14,7 +15,8 @@ import { SeanceService } from 'src/app/services/seance.service';
 export class CommandService {
 
   constructor(private httpClient: HttpClient,
-              private router: Router) { }
+              private router: Router,
+              private token:TokenStorageService) { }
   
   public commandSubject: BehaviorSubject<Command> = new BehaviorSubject(null);
 
@@ -37,7 +39,13 @@ export class CommandService {
   }
 
   public initCommand(user: User){
-    this.httpClient.post<Command>('http://localhost:8080/commandctrl/addcommand/' + user.username, null).subscribe(
+    this.httpClient.post<Command>('http://localhost:8080/commandctrl/addcommand/' + user.username, null, 
+    {
+      headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.token.getToken()
+      }
+  }).subscribe(
         (command) =>{ console.log("init command OK : ", command); this.setCommandSubject(command); this.router.navigate(['']);},
         (error) => { console.log("init command pb : ", error); this.setCommandSubject(null); this.router.navigate(['']);}
     );
@@ -45,7 +53,13 @@ export class CommandService {
   }
 
   public resetCommand(command: Command, username: string){
-    this.httpClient.put<Command>('http://localhost:8080/commandctrl/resetcommand/' + command.idCommand + '/' + username, null).subscribe(
+    this.httpClient.put<Command>('http://localhost:8080/commandctrl/resetcommand/' + command.idCommand + '/' + username, null, 
+    {
+      headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.token.getToken()
+      }
+  }).subscribe(
         (resetedCommand) =>{ 
           console.log("reset command OK : ",resetedCommand.idCommand);
           this.setCommandSubject(resetedCommand); 
@@ -56,7 +70,13 @@ export class CommandService {
   }
 
   public validateCommand(command: Command){
-    this.httpClient.put<Command>('http://localhost:8080/commandctrl/validatecommand', command).subscribe(
+    this.httpClient.put<Command>('http://localhost:8080/commandctrl/validatecommand', command, 
+    {
+      headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.token.getToken()
+      }
+  }).subscribe(
     (validatedCommand) =>{ 
         console.log("validate command OK : ", validatedCommand);
         this.setCommandSubject(validatedCommand);

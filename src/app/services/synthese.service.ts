@@ -1,3 +1,4 @@
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { TimestampFacilityAdaptater } from 'src/app/models/timestamp-facility-adaptater.model';
 import { Command } from '../models/command.model';
 import { Seance } from '../models/seance.model';
@@ -11,7 +12,9 @@ import { Injectable } from '@angular/core';
 })
 export class SyntheseService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private token: TokenStorageService
+              ) { }
 
   private listCommandsForAnUser: Command [] ;
   private listSeancesForAnUser: Seance [] ;
@@ -22,15 +25,33 @@ export class SyntheseService {
   listTimestampForASeance$: BehaviorSubject<TimestampFacilityAdaptater[]> = new BehaviorSubject(null);
   
   public getCommandsForAnUser(username: string): Observable<Command[]> {
-    return this.httpClient.get<Command[]>('http://localhost:8080/synthesectrl/getcommands/' + username);
+    return this.httpClient.get<Command[]>('http://localhost:8080/synthesectrl/getcommands/' + username, 
+    {
+      headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.token.getToken()
+      }
+  });
   }
 
   public getSeancesForAnUser(username: string): Observable<Seance[]> {
-    return this.httpClient.get<Seance[]>('http://localhost:8080/synthesectrl/getseances/' + username);
+    return this.httpClient.get<Seance[]>('http://localhost:8080/synthesectrl/getseances/' + username, 
+    {
+      headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.token.getToken()
+      }
+  });
   }
 
   public getTimestampForASeance(idItem): Observable<TimestampFacilityAdaptater[]> {
-    return this.httpClient.get<TimestampFacilityAdaptater[]>('http://localhost:8080/synthesectrl/gettimestampfromaseance/' + idItem);
+    return this.httpClient.get<TimestampFacilityAdaptater[]>('http://localhost:8080/synthesectrl/gettimestampfromaseance/' + idItem, 
+    {
+      headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.token.getToken()
+      }
+  });
   }
 
   public publishCommandsForAnUser(username: string) {

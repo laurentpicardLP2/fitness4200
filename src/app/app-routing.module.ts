@@ -8,8 +8,9 @@ import { LoginComponent } from './user/login/login.component';
 import { CommandListingComponent } from './synthese/command-listing/command-listing.component';
 import { SeanceListingComponent } from './synthese/seance-listing/seance-listing.component';
 import { SeanceDetailComponent } from './synthese/seance-detail/seance-detail.component';
-import { FacilityNewComponent } from './admin/facility-new/facility-new.component';
+import { FacilityNewComponent } from './manager/facility-new/facility-new.component';
 import { TimestampFacilityComponent } from './booking/timestamp-facility/timestamp-facility.component';
+import { HomeComponent } from './user/home/home.component';
 
 
 const routes: Routes = [
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'seance-detail/:idItem', component: SeanceDetailComponent},
   { path: 'facility-new', component: FacilityNewComponent},
   { path: 'chart', component: TimestampFacilityComponent },
+  { path: '', component: HomeComponent },
   //{ path: 'seance-booking', component: SeanceBookingComponent},
   //{ path: 'facility-category-booking', component: FacilityCategoryBookingComponent},
   //{ path: 'facility-booking', component: FacilityBookingComponent, outlet: 'booking-router-outlet' }

@@ -1,3 +1,4 @@
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { Command } from 'src/app/models/command.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -11,7 +12,8 @@ import { Item } from 'src/app/models/item.model';
 })
 export class BookingService {
 
-  constructor(private httpClient: HttpClient) {   }
+  constructor(private httpClient: HttpClient,
+              private token:TokenStorageService) {   }
 
   // Liste des catégories d'équipements
   private listFacilityCategories: FacilityAvailableAdaptater [] ;
@@ -46,7 +48,13 @@ export class BookingService {
    */
   public getFacilityCategories(timestamp: string): Observable<FacilityAvailableAdaptater[]> {
     
-    return this.httpClient.get<FacilityAvailableAdaptater[]>('http://localhost:8080/facilitycategoryctrl/getfacilitycategoriesavailable/' + timestamp);
+    return this.httpClient.get<FacilityAvailableAdaptater[]>('http://localhost:8080/facilitycategoryctrl/getfacilitycategoriesavailable/' + timestamp, 
+    {
+      headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.token.getToken()
+      }
+  });
   }
 
   

@@ -1,5 +1,7 @@
+import { Authority } from 'src/app/models/authority.model';
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from './services/login.service';
+
 
 
 @Component({
@@ -13,6 +15,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(){
     this.loginService.setIsUserLoggedSubject(false);
+    this.loginService.authoritySubject.subscribe();
+    this.loginService.setAuthoritySubject(new Authority("","ROLE_ANONYMOUS"));
   }
 }
 

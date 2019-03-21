@@ -1,9 +1,12 @@
+import { Authority } from 'src/app/models/authority.model';
 import { BookingService } from 'src/app/services/booking.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
 import { CommandService } from 'src/app/services/command.service';
 import { Command } from 'src/app/models/command.model';
 import { Item } from 'src/app/models/item.model';
+import { Router } from '@angular/router';
+import { AppService } from '../../services/app.service';
 
 @Component({
   selector: 'app-header',
@@ -18,13 +21,17 @@ export class HeaderComponent implements OnInit {
   public listCommandItems: Item []=[];
   public username: string;
   public nbItems: string;
+  public authority: Authority
   
 
   constructor(private loginService: LoginService,
               private commandService: CommandService,
-              private bookingService: BookingService) { }
+              private bookingService: BookingService,
+              private appService: AppService,
+              private router: Router) { }
 
   ngOnInit(){
+    console.log("this.authority  ngOnInit : ", this.authority );
     this.loginService.isUserLoggedSubject.subscribe(res => {
       this.isAuth = res;
     });
@@ -44,8 +51,17 @@ export class HeaderComponent implements OnInit {
     this.loginService.usernameSubject.subscribe(res => {
       this.username = res;
     });
+
+    this.loginService.authoritySubject.subscribe(res => {
+      this.authority = res;
+      console.log("this.authority : ", this.authority);
+    });
   }
- 
+
+  public onAction(nameRouting: string){
+    this.router.navigate([nameRouting]);
+  }
+
 
   public onToggleSidenav = () => {
     
@@ -53,8 +69,6 @@ export class HeaderComponent implements OnInit {
   }
 
   public onToggleCart(){
-    
-    //document.getElementById("cart").style.display = "block";
     var popup = document.getElementById("cartText");
     popup.classList.toggle("show");
   }
@@ -83,7 +97,9 @@ export class HeaderComponent implements OnInit {
   }
 
   public onHome(){
+    this.appService.delCommand();
     this.loginService.signOut();
+    this.router.navigate(['']);
   }
 
 }
