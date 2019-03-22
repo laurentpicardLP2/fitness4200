@@ -34,7 +34,7 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
   shownDay: string;
   selectedDay: string;
   selectedConcatFields: string;
-  isOpen: boolean;
+  isOpen: boolean; // boolean rendant ou non disabled le bouton "Consulter" selon que l'on se situe ou sur la plage horaire 6h - 22h
   command: Command;
   username: string;
   seance: Seance;
@@ -51,8 +51,6 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
     private commandService: CommandService,
     private loginService: LoginService) {
       this.createForm();
-      this.isOpen = true;
-      this.initDateBookingField();
       this.initTimeBookingField();
       this.routingInit();
       this.seanceService.setPriceSeanceSubject(this.priceSeance);
@@ -93,18 +91,6 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
     
   }
 
-  public onShowTime(){
-    let field = this.strTimeOfBooking.split(":");
-    let hh = field[0];
-    let hhInt = parseInt(hh, 10);
-    if(hhInt < this.currentHour ) {
-      //this.isOpen = false;
-    }
-    else {
-      this.isOpen = true;
-    }
-  }
-
   createForm(){
     this.seanceBookingForm = this.formBuilder.group({
       dateOfBooking: ['', [
@@ -116,9 +102,78 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
     });      
   }
 
-  initDateBookingField(){
+  /**
+   * Initialise le champ time selon les conditions suivantes :
+   * - entre minuit et 6h ou entre 22h et minuit : fixe le champ time à 6h
+   * - entre entre 6h et 22h, fixe le champ time l'heure courante +  un intervalle entre 1 et 10' pour 
+   * être postionné sur la prochaine  tranche de réservation
+   */
+  initTimeBookingField(){
+   // this.timeOfBooking = new Date();
+
+   this.currentHour = (new Date()).getHours();
+    this.setHourTime(this.currentHour); 
+    
+    if(this.currentHour > 5 && this.currentHour < 22){
+      this.currentMinute = (new Date()).getMinutes();
+
+      // = 1 si si la partie des minutes se situe dans l'intervalle [0-10[
+      // = 2 si si la partie des minutes se situe dans l'intervalle [10-20[
+      // = 3 si si la partie des minutes se situe dans l'intervalle [20-30[
+      // = 4 si si la partie des minutes se situe dans l'intervalle [30-40[
+      // = 5 si si la partie des minutes se situe dans l'intervalle [40-50[
+      // = 6 si si la partie des minutes se situe dans l'intervalle [50-60[
+      this.setMinuteTime(Math.floor(this.currentMinute / 10) + 1); 
+    }
+    
+   this.strTimeOfBooking = this.shownHour + ":" + this.shownMinute;
+  }
+
+  /**
+   * fixe la partie minute du champ time sur la prochaine dizaine à venir :
+   * - digitMinute + "0" si digit < 6
+   * - "00" autrement
+   * @param digitMinute 
+   */
+  setMinuteTime(digitMinute: number){
+    if(digitMinute < 6){
+      this.shownMinute = digitMinute + "0";
+    } else {
+      this.shownMinute = "00";
+      this.setHourTime(this.currentHour + 1);
+    }
+  }
+
+  /**
+   * fixe la partie heure du champ time à :
+   * - "06" nbHour est dans l'intervalle ]22 - 6[
+   * - "0" + nbHour est dans l'intervalle [6 - 9]
+   * - nbHour.toString() dans l'intervalle [10 - 21]
+   * @param nbHour 
+   */
+  setHourTime(nbHour: number){
+    if(nbHour < 6 || nbHour > 21) {
+      this.shownHour="06";
+      this.shownMinute = "00";
+    } else if(nbHour < 10) {
+      this.shownHour = "0" + nbHour.toString();
+
+    } else if(nbHour < 22) {
+      this.shownHour=nbHour.toString();
+    }
     this.dateOfBooking = new Date();
 
+    if(nbHour > 21){
+      this.dateOfBooking.setDate(this.dateOfBooking.getDate() + 1);
+    }
+    this.initDateBookingField();
+  }
+
+  /**
+   * fixe l'année, le mois et le jour de la date en cours si l'heure courante < 22h, sinon 
+   * l'année, le mois et le jour correspondant au lendemain
+   */
+  initDateBookingField(){
     this.shownYear = this.dateOfBooking.getFullYear().toString();
     this.currentMonth = this.dateOfBooking.getMonth() + 1;
     this.currentDay = this.dateOfBooking.getDate()
@@ -137,43 +192,6 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
     this.strDateOfBooking = this.shownYear + "-" + this.shownMonth + "-" + this.shownDay;
   }
 
-  initTimeBookingField(){
-    this.timeOfBooking = new Date();
-
-    
-    this.currentHour = this.timeOfBooking.getHours();
-    if(this.currentHour < 6) {
-      this.shownHour="06";
-    } else if(this.currentHour < 10) {
-      this.shownHour = "0" + this.currentHour.toString();
-
-    } else if(this.currentHour < 22) {
-      this.shownHour = this.currentHour.toString();
-      //else passer à la journée suivante
-    }
-    
-    this.currentMinute = this.timeOfBooking.getMinutes();
-    this.isOpen = true;
-     if (this.currentMinute < 10){
-      this.shownMinute = "10";
-    } else if(this.currentMinute < 20 ) {
-      this.shownMinute = "20";
-    } else if(this.currentMinute < 30 ) {
-      this.shownMinute = "30";
-    } else if(this.currentMinute < 40 ) {
-      this.shownMinute = "40";
-    } else if(this.currentMinute < 50 ) {
-      this.shownMinute = "50";
-    } else {
-      this.shownMinute = "00";
-      this.shownHour = (this.currentHour + 1).toString(); // bug à 08:50
-    }
-    //else passer à la journée suivante
-    
-   this.strTimeOfBooking = this.shownHour + ":" + this.shownMinute;
-  
-  }
-
   routingInit(){
     this.bookingService.setTimestampSubject(this.getDateTimeFields());
     //this.router.navigate(['/seance-booking', {outlets: {'booking-router-outlet' : ['facility-category-booking']}}]);
@@ -183,9 +201,11 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
     this.bookingService.setTimestampSubject(this.getDateTimeFields());
     this.router.navigate(['/seance-booking', {outlets: {'facility-category-router-outlet' : ['facility-category-booking']}}]);
     let isBookedTimestamp = false;
-    let refFimestamp = this.getDateTimeFields();
+    let dateOfTimestamp = this.getDateTimeFields();
+    
       for(let i=0; i< this.seance.timestampFacilities.length; i++){
-        if(this.seance.timestampFacilities[i].refTimestamp === refFimestamp){
+        console.log("test égalité : ", new Date(this.seance.timestampFacilities[i].dateOfTimestamp.toString().split(".")[0]).toString() === new Date(dateOfTimestamp).toString());
+        if( new Date(this.seance.timestampFacilities[i].dateOfTimestamp.toString().split(".")[0]).toString() === new Date(dateOfTimestamp).toString()){
           isBookedTimestamp = true;
         }
       }
@@ -193,13 +213,12 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
   }
 
   getDateTimeFields(){
-    this.selectedConcatFields = "";
-    let dateFieldsSplit = this.strDateOfBooking.split("-");
+   let dateFieldsSplit = this.strDateOfBooking.split("-");
     let timeFieldsSplit = this.strTimeOfBooking.split(":");
-
-    return dateFieldsSplit[0] + "_" + dateFieldsSplit[1] + "_" +dateFieldsSplit[2] + "_" + 
-    timeFieldsSplit[0] + "_" + timeFieldsSplit[1]; //(Math.floor(parseInt(timeFieldsSplit[1],10)/10)).toString();
+     return new Date(parseInt(dateFieldsSplit[0], 10), parseInt(dateFieldsSplit[1], 10) -1, 
+      parseInt(dateFieldsSplit[2], 10), parseInt(timeFieldsSplit[0],10), parseInt(timeFieldsSplit[1], 10)); 
   }
+
 
   ngOnDestroy(){ // à supprimer
     console.log("destroy");

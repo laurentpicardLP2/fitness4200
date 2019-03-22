@@ -10,10 +10,10 @@
       <input matInput type="date" placeholder="date of Booking" formControlName="dateOfBooking" [(ngModel)]="strDateOfBooking" (click)="onChangeDateTime()">
       </mat-form-field>
       <mat-form-field>
-      <input matInput type="time" min="06:00" max="22:00" step="600" placeholder="time of Booking" formControlName="timeOfBooking" [(ngModel)]="strTimeOfBooking" (click)="onChangeDateTime()">
+      <input matInput type="time" min="06:00" max="21:00" step="600" placeholder="time of Booking" formControlName="timeOfBooking" [(ngModel)]="strTimeOfBooking" (click)="onChangeDateTime()">
       <!-- <button mat-button [routerLink]="['/seance-booking', {outlets: {'booking-router-outlet': ['facility-category-booking']}}]">Show categories!</button> -->
     </mat-form-field>
-      <button [disabled]="!isOpen" mat-button (click)="onChangeDateTime()">Consulter</button>
+      <button mat-button (click)="onChangeDateTime()">Consulter</button>
     </form>
   </div>
 

@@ -46,8 +46,8 @@ export class BookingService {
   /**
    * La fonction getFacilityCategories retourne une liste d'observables contenant la liste des catégories d'équipements.
    */
-  public getFacilityCategories(timestamp: string): Observable<FacilityAvailableAdaptater[]> {
-    
+  public getFacilityCategories(timestamp: Date): Observable<FacilityAvailableAdaptater[]> {
+   
     return this.httpClient.get<FacilityAvailableAdaptater[]>('http://localhost:8080/facilitycategoryctrl/getfacilitycategoriesavailable/' + timestamp, 
     {
       headers: {
@@ -62,7 +62,7 @@ export class BookingService {
    * la liste des équipements pour une tranche horaire donnée.
   * 
   */
- public publishFacilityCategories(timestamp: string) {
+ public publishFacilityCategories(timestamp: Date) {
   this.getFacilityCategories(timestamp).subscribe(
     facilityCategoriesList => {
       this.listFacilityCategories = facilityCategoriesList;
@@ -71,9 +71,9 @@ export class BookingService {
     });
 }
 
-public timestampSubject: BehaviorSubject<string> = new BehaviorSubject(null);
+public timestampSubject: BehaviorSubject<Date> = new BehaviorSubject(null);
 
-public  setTimestampSubject(value: string){
+public  setTimestampSubject(value: Date){
     if(value){
       this.timestampSubject.next(value);
     } else {

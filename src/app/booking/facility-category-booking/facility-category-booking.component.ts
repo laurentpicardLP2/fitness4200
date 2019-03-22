@@ -18,7 +18,7 @@ import { Seance } from 'src/app/models/seance.model';
 })
 export class FacilityCategoryBookingComponent implements OnInit, OnDestroy {
  // panelOpenState = false;
-  refFimestamp: string;
+  dateOfTimestamp: Date;
   listFacilityCategories: BehaviorSubject<FacilityAvailableAdaptater[]>;
   command: Command;
   seance: Seance;
@@ -43,8 +43,8 @@ export class FacilityCategoryBookingComponent implements OnInit, OnDestroy {
     //this.timestamp = this.route.snapshot.params['timestamp']; // contient la tranche horaire sélectionnée
     // => remplacé par un BehaviourSubject
     this.bookingService.timestampSubject.subscribe(res => {
-      this.refFimestamp = res;
-      this.bookingService.publishFacilityCategories(this.refFimestamp);
+      this.dateOfTimestamp = res;
+      this.bookingService.publishFacilityCategories(this.dateOfTimestamp);
       this.listFacilityCategories = this.bookingService.listFacilityCategories$;
     });
     
@@ -78,7 +78,7 @@ export class FacilityCategoryBookingComponent implements OnInit, OnDestroy {
     // this.seance.price = this.seance.price + priceFacilityCategory;
     // console.log(" this.seance.price : ", this.seance.price);
     this.seanceService.setSeanceSubject(this.seance);
-    this.seanceService.addTimestampFacilityToSeance(this.seance, this.refFimestamp, nameFacility, nameFacilityCategory);
+    this.seanceService.addTimestampFacilityToSeance(this.seance, this.dateOfTimestamp, nameFacility, nameFacilityCategory);
     this.seanceService.setIsBookedTimestampSubject(true);
     this.router.navigate(['/seance-booking', {outlets: {'facility-router-outlet' : ['facility-booking']}}]);
   }

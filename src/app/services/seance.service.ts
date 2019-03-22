@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { CommandService } from './command.service';
 import { Seance } from 'src/app/models/seance.model';
 import { Command } from 'src/app/models/command.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { LoginService } from 'src/app/services/login.service';
 import { TokenStorageService } from './token-storage.service';
 
@@ -17,6 +17,8 @@ export class SeanceService {
               private httpClient: HttpClient,
               private loginService: LoginService,
               private token: TokenStorageService) { }
+
+  public listTimestampFacilities$: BehaviorSubject<TimestampFacility[]> = new BehaviorSubject(null);
 
   public priceSeanceSubject: BehaviorSubject<number[]> = new BehaviorSubject(null);
 
@@ -52,7 +54,7 @@ export class SeanceService {
 
   public setSeanceSubject(value: Seance){
     if(value){
-      console.log("value", value);
+      console.log("setSeanceSubject value", value);
       this.seanceSubject.next(value);
     } else {
       this.seanceSubject.next(null);
@@ -94,9 +96,10 @@ export class SeanceService {
     );
   }
 
-  public addTimestampFacilityToSeance(seance: Seance, refFimestamp: string, nameFacility: string, nameFacilityCategory: string){
+  public addTimestampFacilityToSeance(seance: Seance, dateOfTimestamp: Date, nameFacility: string, nameFacilityCategory: string){
+    console.log("addTime : (dateOfTimestamp)", dateOfTimestamp);
     this.httpClient.post<TimestampFacility>('http://localhost:8080/timestampfacilityctrl/addtimestampfacility/' + seance.idItem + '/' +
-    refFimestamp + '/' + nameFacility + '/' + nameFacilityCategory, null, 
+    dateOfTimestamp + '/' + nameFacility + '/' + nameFacilityCategory, null, 
     {
       headers: {
           "Content-Type": "application/json",
@@ -105,13 +108,20 @@ export class SeanceService {
   }).subscribe(
         (timestampFacility) =>{ 
           timestampFacility.nameFacility = nameFacility;
-          seance.timestampFacilities.push(timestampFacility); 
+          
+          seance.timestampFacilities.push(timestampFacility);
+          this.listTimestampFacilities$.next(seance.timestampFacilities);
+          console.log("seance (seance) : ", seance.timestampFacilities[0].dateOfTimestamp);
            //this.commandService.setCommandSubject(command);
+          
           this.setSeanceSubject(seance);  
         },
         (error) => { console.log("init timestamp pb : ", error); }
     );
   }
+
+  
+ 
 
   public addDateAndNbTimestamp(seance: Seance){
     this.httpClient.put<Seance>('http://localhost:8080/seancectrl/adddateandnbtimestamp/' + seance.idItem, null, 
@@ -129,7 +139,7 @@ export class SeanceService {
     );
   }
  
-  public removeTimestampFacilityFromSeance(seance: Seance,  idTimestampFacility: number, refTimestamp: string){
+  public removeTimestampFacilityFromSeance(seance: Seance,  idTimestampFacility: number, dateOfTimestamp: Date){
     this.httpClient.delete('http://localhost:8080/timestampfacilityctrl/deletetimestampfacility/' + idTimestampFacility, 
     {
       headers: {
@@ -145,7 +155,7 @@ export class SeanceService {
 
           let isBookedTimestamp = false;
           for(let i=0; i< seance.timestampFacilities.length; i++){
-            if(seance.timestampFacilities[i].refTimestamp === refTimestamp){
+            if(seance.timestampFacilities[i].dateOfTimestamp === dateOfTimestamp){
               isBookedTimestamp = true;
             }
           }
