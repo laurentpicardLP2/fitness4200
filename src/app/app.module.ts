@@ -23,6 +23,9 @@ import { SeanceListingComponent } from './synthese/seance-listing/seance-listing
 import { SeanceDetailComponent } from './synthese/seance-detail/seance-detail.component';
 import { FacilityNewComponent } from './manager/facility-new/facility-new.component';
 import { HomeComponent } from './user/home/home.component';
+import { AuthGuardCustomerService } from './services/auth-guard-customer.service';
+import { AuthGuardManagerService } from './services/auth-guard-manager.service';
+import { AuthGuardAdminService } from './services/auth-guard-admin.service';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,12 @@ import { HomeComponent } from './user/home/home.component';
     MatIconModule,
     FlexLayoutModule
   ],
-  providers: [TokenStorageService],
+  providers: [
+    TokenStorageService,
+    AuthGuardCustomerService,
+    AuthGuardManagerService,
+    AuthGuardAdminService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

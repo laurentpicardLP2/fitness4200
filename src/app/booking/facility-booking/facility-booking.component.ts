@@ -8,6 +8,7 @@ import { SeanceService } from 'src/app/services/seance.service';
 import { BookingService } from 'src/app/services/booking.service';
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
+import { UtilsService } from 'src/app/services/utils.service';
 
 
 @Component({
@@ -30,7 +31,8 @@ export class FacilityBookingComponent implements OnInit, OnDestroy {
   constructor(private bookingService: BookingService,
               private seanceService: SeanceService,
               private loginService: LoginService,
-              private commandService: CommandService, 
+              private commandService: CommandService,
+              private utilsService: UtilsService,
               private router: Router) { }
 
   ngOnInit() {
@@ -39,8 +41,8 @@ export class FacilityBookingComponent implements OnInit, OnDestroy {
 
     this.seanceService.seanceSubject.subscribe(res => {
       this.seance = res;
-      console.log(" this.timestampFacilities : ",  this.timestampFacilities);
-      console.log(" this.timestampFacilities.dateOfTimestamp : ",  this.timestampFacilities[0] );
+      //console.log(" this.timestampFacilities : ",  this.timestampFacilities);
+      //console.log(" this.timestampFacilities.dateOfTimestamp : ",  this.timestampFacilities[0] );
       //console.log(" this.timestampFacilities[@].dateOfTimestamp : ",  this.timestampFacilities[0].dateOfTimestamp );
       this.isEmptySeance = (this.timestampFacilities.length === 0);
     });
@@ -69,12 +71,11 @@ export class FacilityBookingComponent implements OnInit, OnDestroy {
         this.totalPriceSeance = 0;
       }
     });
-
   }
 
   public onDeleteTimestamp(index, idTimestampFacility) {
-    console.log("onDeleteTimestamp(), id :", idTimestampFacility);
-    console.log("index :", index);
+    // console.log("onDeleteTimestamp(), id :", idTimestampFacility);
+    // console.log("index :", index);
     this.seanceService.removeTimestampFacilityFromSeance(this.seance, idTimestampFacility, this.dateOfTimestamp);
     this.priceSeance.splice(index, 1);
 
@@ -82,42 +83,18 @@ export class FacilityBookingComponent implements OnInit, OnDestroy {
     this.seanceService.setPriceSeanceSubject(this.priceSeance);
   }
 
-  public getDateSeance(): string{
-    let dd, mm;
-    //console.log("this.dateOfTimestamp : ", this.dateOfTimestamp);
-    if (this.dateOfTimestamp.getDay() < 10) {
-      dd = "0" + this.dateOfTimestamp.getDay();
-    }
-    else {
-      dd = "" + this.dateOfTimestamp.getDay();
-    }
-    if (this.dateOfTimestamp.getMonth() + 1 < 10) {
-      mm = "0" + (this.dateOfTimestamp.getMonth() + 1);
-    }
-    else {
-      mm = "" + (this.dateOfTimestamp.getMonth() + 1);
-    }
-    return  dd + '/' + mm + '/' + this.dateOfTimestamp.getFullYear();
+  public getDateSeance(pDateOfTimestamp: Date): string{
+    return  this.utilsService.getDateSeance(pDateOfTimestamp);
   }
 
-  public convertIntoDate(pDateOfTimestamp): string{
-    
-    let splitDateOfTimestamp = pDateOfTimestamp.split("T");
-    let datePart = splitDateOfTimestamp[0];
-    let splitDatePart: string[] = datePart.split("-");
-
-    return splitDatePart[2] + '/' + splitDatePart[1] + '/' + splitDatePart[0].substring(2,4);
-    }
-  
-  public convertIntoTime(pDateOfTimestamp): string{
-  
-    let splitDateOfTimestamp = pDateOfTimestamp.split("T");
-    let timePart = splitDateOfTimestamp[1];
-    let splitTimePart = timePart.split(":");
-
-    return splitTimePart[0] + ':' + splitTimePart[1];
+  public getTimeSeance(pDateOfTimestamp: Date): string{
+    return  this.utilsService.getTimeSeance(pDateOfTimestamp);
   }
-  
+
+
+  convertIntoMonetaryFormat(price: number){
+    return this.utilsService.convertIntoMonetaryFormat(price);
+  }  
 
 
   public onValidateSeance(){

@@ -25,7 +25,7 @@
           </ng-container>
           <ng-container matColumnDef="Date">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
-          <mat-cell *matCellDef="let post"> {{post.dateOfSeance}} </mat-cell>
+          <mat-cell *matCellDef="let post"> {{convertIntoDateTime(post.dateOfSeance)}} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="Nb Activités">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Nb Activités </mat-header-cell>
@@ -33,7 +33,7 @@
           </ng-container>
           <ng-container matColumnDef="Prix">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Prix </mat-header-cell>
-          <mat-cell *matCellDef="let post"> {{post.price}} </mat-cell>
+          <mat-cell *matCellDef="let post"> {{convertIntoMonetaryFormat(post.price)}} </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onShow(row.idItem)"></mat-row>

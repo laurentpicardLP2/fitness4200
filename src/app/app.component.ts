@@ -14,9 +14,9 @@ export class AppComponent implements OnInit {
   constructor(private loginService: LoginService) { }
 
   ngOnInit(){
-    this.loginService.setIsUserLoggedSubject(false);
-    this.loginService.authoritySubject.subscribe();
-    this.loginService.setAuthoritySubject(new Authority("","ROLE_ANONYMOUS"));
+     this.loginService.setIsUserLoggedSubject(false);
+     this.loginService.authoritySubject.subscribe();
+     this.loginService.setAuthoritySubject(new Authority("","ROLE_ANONYMOUS"));
   }
 }
 

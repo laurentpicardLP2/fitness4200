@@ -26,6 +26,7 @@ export class FacilityCategoryBookingComponent implements OnInit, OnDestroy {
   isBookedTimestamp: boolean;
   isAvailableFacilites: boolean;
   isNotAvailableFacilities: boolean;
+  isShowableFacilities: boolean;
   priceSeance: number[]=[];
 
   constructor(
@@ -60,6 +61,14 @@ export class FacilityCategoryBookingComponent implements OnInit, OnDestroy {
       this.isBookedTimestamp = res;
     });
 
+    this.seanceService.isShowableFacilitiesSubject.subscribe(res => {
+      this.isShowableFacilities = res;
+    });
+
+    this.seanceService.isBookedTimestampSubject.subscribe(res => {
+      this.isBookedTimestamp = res;
+    });
+
     this.bookingService.isNotAvailableFacilitiesSubject.subscribe(res => {
       this.isNotAvailableFacilities = res;
     });
@@ -75,9 +84,8 @@ export class FacilityCategoryBookingComponent implements OnInit, OnDestroy {
   onBookingFacility(nameFacility: string, nameFacilityCategory: string, priceFacilityCategory: number){
     this.priceSeance.push(priceFacilityCategory);
     this.seanceService.setPriceSeanceSubject(this.priceSeance);
-    // this.seance.price = this.seance.price + priceFacilityCategory;
-    // console.log(" this.seance.price : ", this.seance.price);
     this.seanceService.setSeanceSubject(this.seance);
+ 
     this.seanceService.addTimestampFacilityToSeance(this.seance, this.dateOfTimestamp, nameFacility, nameFacilityCategory);
     this.seanceService.setIsBookedTimestampSubject(true);
     this.router.navigate(['/seance-booking', {outlets: {'facility-router-outlet' : ['facility-booking']}}]);
@@ -85,6 +93,7 @@ export class FacilityCategoryBookingComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy(){
+    //this.bookingService.isNotAvailableFacilitiesSubject.unsubscribe();
     //this.seanceService.priceSeanceSubject.unsubscribe();
   }
   

@@ -12,6 +12,8 @@ import { Authority } from 'src/app/models/authority.model';
   providedIn: 'root'
 })
 export class LoginService {
+  public isAuth: boolean;
+  public authority: string;
 
   constructor(private httpClient: HttpClient,
               private commandService: CommandService,
@@ -23,8 +25,10 @@ export class LoginService {
   public isUserLoggedSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public setIsUserLoggedSubject(value: boolean){
     if(value){
+      this.isAuth = true;
       this.isUserLoggedSubject.next(value);
     } else {
+      this.isAuth = false;
       this.isUserLoggedSubject.next(null);
     }
   }
@@ -43,8 +47,10 @@ export class LoginService {
   public authoritySubject: BehaviorSubject<Authority> = new BehaviorSubject(null);
   public setAuthoritySubject(value: Authority){
     if(value){
+      this.authority = value.authority;
       this.authoritySubject.next(value);
     } else {
+      this.authority = "ROLE_ANONYMOUS";
       this.authoritySubject.next(null);
     }
   }
@@ -67,9 +73,6 @@ export class LoginService {
         this.publishAuthority(user);
         this.setIsUserLoggedSubject(true); 
         this.setUsernameSubject(user.username);
-        
-        //this.loginService.publishRole()
-        //this.router.navigate(['googlebooks']);
       },
       (error) => { console.log("login user pb : ", error); 
         this.setIsUserLoggedSubject(false);
@@ -80,7 +83,6 @@ export class LoginService {
 
   attemptAuth(ussername: string, password: string): Observable<any> {
     const credentials = {username: ussername, password: password};
-    console.log('attempAuth ::');
     return this.httpClient.post('http://localhost:8080/userctrl/login', credentials);
   }
 

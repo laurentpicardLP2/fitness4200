@@ -57,6 +57,9 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
+    this.seanceService.setIsBookedTimestampSubject(false);
+    this.seanceService.setIsShowableFacilitiesSubject(true);
+
     this.loginService.usernameSubject.subscribe(res => {
       this.username = res;
     });
@@ -72,12 +75,9 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
       this.seance = res;
     });
 
-    this.seanceService.setIsBookedTimestampSubject(false);
-
     this.loginService.isUserLoggedSubject.subscribe(res => {
       this.isAuth = res;
     });
-
 
     this.seanceService.isValidateSeanceSubject.subscribe(res => {
       this.isValidateSeance = res;
@@ -198,14 +198,33 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
   }
 
   public onChangeDateTime() {
-    this.bookingService.setTimestampSubject(this.getDateTimeFields());
+    
+    let selectedTimestamp = this.getDateTimeFields();
+    
+    if(selectedTimestamp.getHours()>21 || selectedTimestamp.getHours()<6 || (selectedTimestamp.getMinutes()%10 != 0) || selectedTimestamp.getTime() < new Date().getTime()){
+      this.seanceService.setIsShowableFacilitiesSubject(false);
+      this.seanceService.setIsBookedTimestampSubject(false);
+      this.bookingService.setIsNotAvailableFacilitiesSubject(false);
+      return;
+    }
+    else {
+      this.seanceService.setIsShowableFacilitiesSubject(true);
+    }
+
+    this.bookingService.setTimestampSubject(selectedTimestamp);
     this.router.navigate(['/seance-booking', {outlets: {'facility-category-router-outlet' : ['facility-category-booking']}}]);
     let isBookedTimestamp = false;
     let dateOfTimestamp = this.getDateTimeFields();
     
       for(let i=0; i< this.seance.timestampFacilities.length; i++){
-        console.log("test égalité : ", new Date(this.seance.timestampFacilities[i].dateOfTimestamp.toString().split(".")[0]).toString() === new Date(dateOfTimestamp).toString());
-        if( new Date(this.seance.timestampFacilities[i].dateOfTimestamp.toString().split(".")[0]).toString() === new Date(dateOfTimestamp).toString()){
+        //console.log("test égalité : ", new Date(this.seance.timestampFacilities[i].dateOfTimestamp.toString().split(".")[0]).toString() === new Date(dateOfTimestamp).toString());
+        //console.log("test égalité timestampFacilities : ", new Date(this.seance.timestampFacilities[i].dateOfTimestamp.toString().split(".")[0]).toString());
+        //console.log("test égalité : ", new Date(dateOfTimestamp).toString());
+        //if( new Date(this.seance.timestampFacilities[i].dateOfTimestamp.toString().split(".")[0]).toString() === new Date(dateOfTimestamp).toString()){
+
+         // console.log("test égalité (this.seance.timestampFacilities[i].dateOfTimestamp): ", this.seance.timestampFacilities[i].dateOfTimestamp);
+          //console.log("test égalité (dateOfTimestamp) : ", dateOfTimestamp);
+        if( this.seance.timestampFacilities[i].dateOfTimestamp.toString() === dateOfTimestamp.toString() ){
           isBookedTimestamp = true;
         }
       }
@@ -213,9 +232,10 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
   }
 
   getDateTimeFields(){
-   let dateFieldsSplit = this.strDateOfBooking.split("-");
-    let timeFieldsSplit = this.strTimeOfBooking.split(":");
-     return new Date(parseInt(dateFieldsSplit[0], 10), parseInt(dateFieldsSplit[1], 10) -1, 
+  let dateFieldsSplit = this.strDateOfBooking.split("-");
+  let timeFieldsSplit = this.strTimeOfBooking.split(":");
+
+  return new Date(parseInt(dateFieldsSplit[0], 10), parseInt(dateFieldsSplit[1], 10) -1, 
       parseInt(dateFieldsSplit[2], 10), parseInt(timeFieldsSplit[0],10), parseInt(timeFieldsSplit[1], 10)); 
   }
 
@@ -223,7 +243,7 @@ export class SeanceBookingComponent implements OnInit, OnDestroy {
   ngOnDestroy(){ // à supprimer
     console.log("destroy");
     if(this.isAuth  && !this.isValidateSeance){
-      this.seanceService.removeSeanceFromCommand(this.command, this.seance);
+      //this.seanceService.removeSeanceFromCommand(this.command, this.seance);
       //this.seanceService.priceSeanceSubject.unsubscribe();
     }
   }

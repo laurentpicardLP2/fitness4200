@@ -6,7 +6,7 @@ import { CommandService } from 'src/app/services/command.service';
 import { Command } from 'src/app/models/command.model';
 import { Item } from 'src/app/models/item.model';
 import { Router } from '@angular/router';
-import { AppService } from '../../services/app.service';
+import { UtilsService } from '../../services/utils.service';
 
 @Component({
   selector: 'app-header',
@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
   constructor(private loginService: LoginService,
               private commandService: CommandService,
               private bookingService: BookingService,
-              private appService: AppService,
+              private utilsService: UtilsService,
               private router: Router) { }
 
   ngOnInit(){
@@ -97,7 +97,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public onHome(){
-    this.appService.delCommand();
+    this.utilsService.delCommand();
     this.loginService.signOut();
     this.router.navigate(['']);
   }

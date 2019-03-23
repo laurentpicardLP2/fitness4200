@@ -44,7 +44,7 @@ export class SyntheseService {
   });
   }
 
-  public getTimestampForASeance(idItem): Observable<TimestampFacilityAdaptater[]> {
+  public getTimestampForASeance(idItem: number): Observable<TimestampFacilityAdaptater[]> {
     return this.httpClient.get<TimestampFacilityAdaptater[]>('http://localhost:8080/synthesectrl/gettimestampfromaseance/' + idItem, 
     {
       headers: {

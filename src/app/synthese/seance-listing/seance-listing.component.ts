@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator, MatTableDataSource, PageEvent, MatSort } from '@angular/material'
 import { MatPaginatorModule } from '@angular/material/paginator'
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-seance-listing',
@@ -22,7 +23,8 @@ export class SeanceListingComponent implements OnInit {
 
   constructor(private router: Router,
       private loginService: LoginService,
-      private syntheseService: SyntheseService) { }
+      private syntheseService: SyntheseService,
+      private utilsService: UtilsService) { }
 
   ngOnInit() {
     this.loginService.usernameSubject.subscribe(res => {
@@ -47,6 +49,14 @@ export class SeanceListingComponent implements OnInit {
       console.log('There was an error !' + error);
       });
     }
+
+    public convertIntoDateTime(pDateOfSeance) {
+      return pDateOfSeance = (pDateOfSeance==null) ? "" : this.utilsService.convertIntoDateTimeSeanceListing(pDateOfSeance);
+    }
+
+    convertIntoMonetaryFormat(price: number){
+      return this.utilsService.convertIntoMonetaryFormat(price);
+    } 
 
     onShow(idItem: number) {
       this.router.navigate(['seance-detail/' + idItem]);

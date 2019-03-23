@@ -1,6 +1,6 @@
 
       
-<mat-accordion *ngIf="!isBookedTimestamp">
+<mat-accordion *ngIf="!isBookedTimestamp && isShowableFacilities">
       <mat-expansion-panel *ngFor="let facilityCategory of listFacilityCategories | async">
           
           <mat-expansion-panel-header *ngIf="facilityCategory.quantityAvailable > 0">

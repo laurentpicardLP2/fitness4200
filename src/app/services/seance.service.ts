@@ -7,6 +7,7 @@ import { Command } from 'src/app/models/command.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoginService } from 'src/app/services/login.service';
 import { TokenStorageService } from './token-storage.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class SeanceService {
   constructor(private commandService: CommandService,
               private httpClient: HttpClient,
               private loginService: LoginService,
+              private router: Router,
               private token: TokenStorageService) { }
 
   public listTimestampFacilities$: BehaviorSubject<TimestampFacility[]> = new BehaviorSubject(null);
@@ -37,6 +39,16 @@ export class SeanceService {
       this.isBookedTimestampSubject.next(value);
     } else {
       this.isBookedTimestampSubject.next(null);
+    }
+  }
+
+  public isShowableFacilitiesSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
+
+  public setIsShowableFacilitiesSubject(value: boolean){
+    if(value){
+      this.isShowableFacilitiesSubject.next(value);
+    } else {
+      this.isShowableFacilitiesSubject.next(null);
     }
   }
 
@@ -62,6 +74,11 @@ export class SeanceService {
   }
 
   public addSeanceToCommand(command: Command, username: string){
+    // if(command == undefined){
+    //   this.loginService.signOut();
+    //   this.router.navigate(['/login']);
+    //   return;
+    // }
     this.httpClient.post<Seance>('http://localhost:8080/seancectrl/addseance/' + command.idCommand + '/' + username, null, 
     {
       headers: {
@@ -87,7 +104,6 @@ export class SeanceService {
       }
   }).subscribe(
         () =>{ 
-          console.log("reset seance OK : ",seance.idItem);
           command.items.splice(command.items.findIndex((item)=> item.idItem === seance.idItem), 1); 
           this.commandService.setCommandSubject(command); 
           console.log("reset command : ", command);
@@ -97,7 +113,8 @@ export class SeanceService {
   }
 
   public addTimestampFacilityToSeance(seance: Seance, dateOfTimestamp: Date, nameFacility: string, nameFacilityCategory: string){
-    console.log("addTime : (dateOfTimestamp)", dateOfTimestamp);
+    
+    
     this.httpClient.post<TimestampFacility>('http://localhost:8080/timestampfacilityctrl/addtimestampfacility/' + seance.idItem + '/' +
     dateOfTimestamp + '/' + nameFacility + '/' + nameFacilityCategory, null, 
     {
@@ -108,10 +125,10 @@ export class SeanceService {
   }).subscribe(
         (timestampFacility) =>{ 
           timestampFacility.nameFacility = nameFacility;
-          
+          timestampFacility.dateOfTimestamp = dateOfTimestamp;
           seance.timestampFacilities.push(timestampFacility);
           this.listTimestampFacilities$.next(seance.timestampFacilities);
-          console.log("seance (seance) : ", seance.timestampFacilities[0].dateOfTimestamp);
+          //console.log("seance (seance) : ", seance.timestampFacilities[0].dateOfTimestamp);
            //this.commandService.setCommandSubject(command);
           
           this.setSeanceSubject(seance);  
